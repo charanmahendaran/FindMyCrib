@@ -11,37 +11,94 @@
   margin-bottom: 15px;
 }
 
-/* FILTER PANEL */
 .filter-panel {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  display: flex;
   gap: 12px;
   margin: 20px 0;
+  flex-wrap: wrap;
 }
 
+/* INPUTS + SELECT (GLASS) */
 .filter-panel input,
 .filter-panel select {
-  padding: 10px;
+  padding: 10px 14px;
   border-radius: 10px;
-  background: rgba(0,0,0,0.4);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: white;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  background: rgba(255, 255, 255, 0.05);
+  color: #e0e0e0;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  outline: none;
+  transition: 0.2s;
 }
 
-/* BUTTON */
+/* FOCUS EFFECT */
+.filter-panel input:focus,
+.filter-panel select:focus {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.filter-panel select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.filter-panel select {
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.filter-panel select:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.filter-panel select:focus {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Dropdown option styling */
+.filter-panel select option {
+  background: rgba(20, 20, 20, 0.95);
+  color: #e5e5e5;
+}
+
 .primary-btn {
   padding: 10px 20px;
-  border-radius: 20px;
-  border: none;
-  background: var(--button-gradient);
-  color: var(--text-primary);
+  border-radius: 12px;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  background: linear-gradient(
+    135deg,
+    rgba(46, 125, 50, 0.8),
+    rgba(56, 142, 60, 0.8)
+  );
+
+  color: white;
+  font-weight: 600;
+
   cursor: pointer;
-  transition: 0.25s;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition: all 0.25s ease;
 }
 
+/* HOVER = interactive */
 .primary-btn:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 8px 20px rgba(46, 125, 50, 0.4);
+}
+
+/* CLICK */
+.primary-btn:active {
+  transform: scale(0.96);
 }
 
 /* GRID */
@@ -164,4 +221,17 @@
 
 .compare-now:hover {
   transform: translateY(-2px);
+}
+
+.property-list {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.empty-state {
+  color: #888;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
 }

@@ -1,5 +1,11 @@
+// src/pages/Explore/Explore.jsx
+
+import { useState } from "react";
 import "./Explore.css";
-import properties from "../../data/propertiesData";
+import PropertyCard from "../../components/PropertyCard";
+import PropertyModal from "../../components/PropertyModal";
+import { fetchProperties } from "../../services/agent1";
+import LoadingOverlay from "../../components/LoadingOverlay";
 
 function Explore({
   setActiveSection,
@@ -7,7 +13,18 @@ function Explore({
   compareList,
   setCompareList,
 }) {
+  // 🔹 States
+  const [selectedModal, setSelectedModal] = useState(null);
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
+  // 🔹 Filters
+  const [location, setLocation] = useState("");
+  const [budget, setBudget] = useState("");
+  const [type, setType] = useState("");
+
+  // 🔹 Compare Logic
   const handleCompare = (property) => {
     const exists = compareList.find((p) => p.id === property.id);
 
@@ -20,24 +37,72 @@ function Explore({
     }
   };
 
+  // 🔹 Search Handler
+  const handleSearch = async () => {
+    setLoading(true);
+    setHasSearched(true);
+
+    const payload = {
+      location: location || "",   // allow empty
+      budget: Number(budget) || 0,
+      type,
+    };
+
+    try {
+      const results = await fetchProperties(payload);
+      console.log("RESULTS:", results);
+      setProperties(results);
+    } catch (err) {
+      console.error("Search error:", err);
+      setProperties([]);
+    }
+
+    setLoading(false);
+  };
+
   return (
     <div className="explore-container">
-
       <h2 className="explore-title">Explore Properties</h2>
 
-      {/* FILTER */}
+      {/* 🔍 FILTER PANEL */}
       <div className="filter-panel">
-        <input placeholder="Location" />
-        <input placeholder="Budget" />
+        <input
+          placeholder="Enter location (e.g. Whitefield)"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
 
-        <select>
-          <option>Property Type</option>
-          <option>Apartment</option>
-          <option>Villa</option>
+        <input
+          placeholder="Budget (e.g. 90, 90L, 1.2Cr)"
+          value={budget}
+          onChange={(e) => setBudget(e.target.value)}
+        />
+
+        <select value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="">All</option>
+          <option value="1bhk">1 BHK Apartment</option>
+          <option value="2bhk">2 BHK Apartment</option>
+          <option value="3bhk">3 BHK Apartment</option>
+          <option value="4bhk">4 BHK Apartment</option>
+          <option value="villa">Villa (3–5 BHK)</option>
+          <option value="plot">Plot / Land</option>
         </select>
 
-        <button className="primary-btn">Search</button>
+        <button
+          className="primary-btn"
+          onClick={handleSearch}
+          disabled={loading}
+        >
+          {loading ? "Searching..." : "🔍 Search"}
+        </button>
       </div>
+
+      {/* ❌ EMPTY STATE */}
+      {!loading && hasSearched && properties.length === 0 && (
+        <p className="empty-state">
+          No properties found. Try adjusting filters.
+        </p>
+      )}
 
       {/* 🔥 COMPARE BAR */}
       <div className="compare-bar">
@@ -62,58 +127,40 @@ function Explore({
         </div>
       </div>
 
-      {/* GRID */}
+      {/* 🏘 PROPERTY GRID */}
       <div className="property-grid">
-        {properties.map((property) => {
+        {properties.map((property, index) => {
           const isSelected = compareList.some(
             (p) => p.id === property.id
           );
 
           return (
-            <div
+            <PropertyCard
               key={property.id}
-              className={`property-card ${isSelected ? "selected" : ""}`}
-            >
-
-              <img src={property.image} alt="" />
-
-              <div className="property-info">
-                <h3>{property.title}</h3>
-                <p>{property.location}</p>
-                <p className="price">{property.price}</p>
-
-                <div className="property-icons">
-                  <span>🛏 {property.bhk}</span>
-                  <span>🛁 {property.bath}</span>
-                  <span>📐 {property.area}</span>
-                </div>
-
-                <div className="card-actions">
-
-                  <button
-                    className="analyze-btn"
-                    onClick={() => {
-                      setSelectedProperty(property);
-                      setActiveSection("price");
-                    }}
-                  >
-                    Analyze
-                  </button>
-
-                  <button
-                    className={`compare-btn ${isSelected ? "active" : ""}`}
-                    onClick={() => handleCompare(property)}
-                  >
-                    {isSelected ? "Remove" : "Compare"}
-                  </button>
-
-                </div>
-              </div>
-            </div>
+              property={property}
+              index={index}
+              isSelected={isSelected}
+              onDetails={(p) => setSelectedModal(p)}
+              onCompare={handleCompare}
+            />
           );
         })}
       </div>
 
+      {/* 📌 MODAL */}
+      {selectedModal && (
+        <PropertyModal
+          property={selectedModal}
+          onClose={() => setSelectedModal(null)}
+          onAnalyze={(p) => {
+            setSelectedProperty(p);
+            setActiveSection("price");
+          }}
+        />
+      )}
+
+      {/* 🔥 FROSTED LOADER */}
+      {loading && <LoadingOverlay />}
     </div>
   );
 }
