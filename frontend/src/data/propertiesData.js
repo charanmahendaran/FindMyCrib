@@ -37,6 +37,19 @@ const properties = [
     area: "3000 sqft",
     features: ["Private garden", "Gated community", "Spacious layout"],
     reason: "Excellent investment due to proximity to IT hubs and high rental demand."
+  },
+  {
+    id: 4,
+    name: "Luxury Villa Retreat 2.0",
+    location: "Sarjapur",
+    price: "1.5 Cr",
+    numeric_price: 15000000,
+    type: "villa",
+    bhk: 4,
+    bath: 4,
+    area: "3000 sqft",
+    features: ["Private garden", "Gated community", "Spacious layout"],
+    reason: "investment due to proximity to IT hubs and high rental demand.Excellent investment due to proximity to IT hubs and high rental demand."
   }
 ];
 

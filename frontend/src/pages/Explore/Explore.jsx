@@ -1,11 +1,12 @@
 // src/pages/Explore/Explore.jsx
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Explore.css";
 import PropertyCard from "../../components/PropertyCard";
 import PropertyModal from "../../components/PropertyModal";
 import { fetchProperties } from "../../services/agent1";
 import LoadingOverlay from "../../components/LoadingOverlay";
+import CompareBar from "../../components/CompareBar";
 
 function Explore({
   setActiveSection,
@@ -13,18 +14,30 @@ function Explore({
   compareList,
   setCompareList,
 }) {
-  // 🔹 States
+  // 🔹 STATES
   const [selectedModal, setSelectedModal] = useState(null);
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
-  // 🔹 Filters
+  // 🔹 FILTERS
   const [location, setLocation] = useState("");
   const [budget, setBudget] = useState("");
   const [type, setType] = useState("");
 
-  // 🔹 Compare Logic
+  // ✅ 🔥 PERSIST COMPARE LIST (KEY FIX)
+  useEffect(() => {
+    const saved = sessionStorage.getItem("compare_list");
+    if (saved) {
+      setCompareList(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("compare_list", JSON.stringify(compareList));
+  }, [compareList]);
+
+  // 🔹 COMPARE HANDLER
   const handleCompare = (property) => {
     const exists = compareList.find((p) => p.id === property.id);
 
@@ -37,21 +50,22 @@ function Explore({
     }
   };
 
-  // 🔹 Search Handler
+  // 🔹 SEARCH HANDLER
   const handleSearch = async () => {
     setLoading(true);
     setHasSearched(true);
 
     const payload = {
-      location: location || "",   // allow empty
+      location: location?.trim() || "",
       budget: Number(budget) || 0,
       type,
     };
 
     try {
       const results = await fetchProperties(payload);
-      console.log("RESULTS:", results);
-      setProperties(results);
+
+      // 🔥 Ensure stable array
+      setProperties(Array.isArray(results) ? results : []);
     } catch (err) {
       console.error("Search error:", err);
       setProperties([]);
@@ -97,35 +111,22 @@ function Explore({
         </button>
       </div>
 
+      {/* 🔥 STICKY COMPARE BAR */}
+      <CompareBar
+        compareList={compareList}
+        setCompareList={setCompareList}
+        onCompare={() => setActiveSection("compare")}
+      />
+      
+      {/* 🔥 LOADING OVERLAY */}
+      {loading && <LoadingOverlay />}
+
       {/* ❌ EMPTY STATE */}
       {!loading && hasSearched && properties.length === 0 && (
         <p className="empty-state">
           No properties found. Try adjusting filters.
         </p>
       )}
-
-      {/* 🔥 COMPARE BAR */}
-      <div className="compare-bar">
-        <div className="compare-left">
-          {compareList.length > 0 && (
-            <div className="selected-pill">
-              {compareList.length} Selected
-              <span onClick={() => setCompareList([])}>✕</span>
-            </div>
-          )}
-        </div>
-
-        <div className="compare-right">
-          {compareList.length > 1 && (
-            <button
-              className="compare-now"
-              onClick={() => setActiveSection("compare")}
-            >
-              Compare Now
-            </button>
-          )}
-        </div>
-      </div>
 
       {/* 🏘 PROPERTY GRID */}
       <div className="property-grid">
@@ -158,9 +159,6 @@ function Explore({
           }}
         />
       )}
-
-      {/* 🔥 FROSTED LOADER */}
-      {loading && <LoadingOverlay />}
     </div>
   );
 }

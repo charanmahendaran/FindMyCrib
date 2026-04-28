@@ -2,7 +2,7 @@
 
 import mockData from "../data/propertiesData";
 
-const USE_MOCK = false;//Use false to fetch from API, true to use mock data
+const USE_MOCK = true;//Use false to fetch from API, true to use mock data
 
 const WEBHOOK_URL =
   "https://learnersbyte1.app.n8n.cloud/webhook-test/property-recommend";
