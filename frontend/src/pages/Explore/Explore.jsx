@@ -53,7 +53,9 @@ function Explore({
   // 🔹 SEARCH HANDLER
   const handleSearch = async () => {
     setLoading(true);
-    setHasSearched(true);
+
+    // 🔥 reset animation so it replays
+    setHasSearched(false);
 
     const payload = {
       location: location || "",
@@ -64,6 +66,12 @@ function Explore({
     try {
       const results = await fetchProperties(payload);
       setProperties(results);
+
+      // 🔥 trigger animation after data loads
+      setTimeout(() => {
+        setHasSearched(true);
+      }, 50);
+
     } catch (err) {
       console.error("Search error:", err);
       setProperties([]);
@@ -127,7 +135,7 @@ function Explore({
       )}
 
       {/* 🏘 PROPERTY GRID */}
-      <div className="property-grid">
+      <div className={`property-grid ${hasSearched ? "show-grid" : ""}`}>
         {properties.map((property, index) => {
           const isSelected = compareList.some(
             (p) => p.id === property.id
