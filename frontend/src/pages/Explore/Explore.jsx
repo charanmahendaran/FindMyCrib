@@ -64,15 +64,6 @@ function Explore({
     try {
       const results = await fetchProperties(payload);
       setProperties(results);
-
-      // 🔥 Smooth scroll to results
-      setTimeout(() => {
-        document.querySelector(".property-grid")?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }, 100);
-
     } catch (err) {
       console.error("Search error:", err);
       setProperties([]);
