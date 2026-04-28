@@ -56,16 +56,23 @@ function Explore({
     setHasSearched(true);
 
     const payload = {
-      location: location?.trim() || "",
+      location: location || "",
       budget: Number(budget) || 0,
       type,
     };
 
     try {
       const results = await fetchProperties(payload);
+      setProperties(results);
 
-      // 🔥 Ensure stable array
-      setProperties(Array.isArray(results) ? results : []);
+      // 🔥 Smooth scroll to results
+      setTimeout(() => {
+        document.querySelector(".property-grid")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+
     } catch (err) {
       console.error("Search error:", err);
       setProperties([]);
@@ -117,7 +124,7 @@ function Explore({
         setCompareList={setCompareList}
         onCompare={() => setActiveSection("compare")}
       />
-      
+
       {/* 🔥 LOADING OVERLAY */}
       {loading && <LoadingOverlay />}
 

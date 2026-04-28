@@ -15,6 +15,18 @@
   backdrop-filter: blur(12px);
 
   border: 1px solid rgba(255, 255, 255, 0.12);
+  animation: slideFadeIn 0.35s ease;
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* LEFT TEXT */
@@ -37,24 +49,67 @@
 }
 
 /* 🔥 MAIN BUTTON */
+/* 🔥 PREMIUM GLASS BUTTON */
 .compare-inline-btn {
-  padding: 8px 16px;
+  position: relative;
+  padding: 10px 18px;
 
-  border-radius: 10px;
-  border: none;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 
-  background: rgba(255, 255, 255, 0.18);
-  color: white;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.18),
+    rgba(255,255,255,0.05)
+  );
 
-  font-weight: 500;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
   cursor: pointer;
+  overflow: hidden;
 
-  backdrop-filter: blur(10px);
-
-  transition: 0.25s ease;
+  transition: all 0.3s ease;
 }
 
+/* ✨ subtle glow */
+.compare-inline-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.25),
+    transparent
+  );
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* hover effect */
 .compare-inline-btn:hover {
-  background: rgba(255, 255, 255, 0.28);
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.02);
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.25),
+    rgba(255,255,255,0.08)
+  );
+  box-shadow: 0 10px 30px rgba(255,255,255,0.15);
+}
+
+.compare-inline-btn:hover::before {
+  opacity: 1;
+}
+
+/* click feel */
+.compare-inline-btn:active {
+  transform: scale(0.96);
 }

@@ -31,8 +31,18 @@
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7);
 
   position: relative;
-
+  scroll-behavior: smooth;
   animation: modalScaleIn 0.35s ease;
+}
+
+/* 🔥 custom scrollbar (optional but premium) */
+.modal-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
 }
 
 /* ❌ CLOSE */
