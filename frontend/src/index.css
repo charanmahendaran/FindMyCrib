@@ -104,3 +104,29 @@ html {
   font-weight: 400;
   font-style: normal;
 }
+/* WIDTH */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* TRACK */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* HANDLE */
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+html {
+  scroll-behavior: smooth;
+}
