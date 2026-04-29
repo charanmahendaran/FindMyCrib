@@ -1,10 +1,17 @@
 import "./Hero.css";
+import ParticleBackground from "../../components/ParticleBackground";
 
 function Hero({ setActiveSection }) {
   return (
     <div className="hero-container">
+
+      {/* 🔥 PARTICLES (BACK LAYER) */}
+      <ParticleBackground />
+
+      {/* 🔥 SOFT GLOW (MIDDLE LAYER) */}
       <div className="hero-bg-glow"></div>
 
+      {/* 🔥 CONTENT (TOP LAYER) */}
       <div className="hero-content">
 
         <h1 className="hero-title">

@@ -22,52 +22,31 @@ function ParticleBackground() {
 
         particles: {
           number: {
-            value: 60,
-            density: { enable: true, area: 800 },
-          },
-
-          color: {
-            value: "#ffffff",
+            value: 55,  // balanced
           },
 
           opacity: {
-            value: 0.15,
+            value: 0.3,  // 🔥 was too low before
           },
 
           size: {
-            value: { min: 1, max: 3 },
+            value: { min: 1.2, max: 3 },
           },
 
           links: {
             enable: true,
-            distance: 120,
-            color: "#ffffff",
-            opacity: 0.08,
-            width: 1,
+            opacity: 0.15,  // 🔥 visible but clean
           },
 
           move: {
-            enable: true,
-            speed: 0.6,
-            direction: "none",
-            outModes: "out",
+            speed: 0.3,  // smooth
           },
         },
 
         interactivity: {
           events: {
             onHover: {
-              enable: true,
-              mode: "grab",
-            },
-          },
-
-          modes: {
-            grab: {
-              distance: 140,
-              links: {
-                opacity: 0.2,
-              },
+              enable: false, // 🔥 disable
             },
           },
         },

@@ -18,12 +18,12 @@ function Navbar({ setActiveSection, activeSection }) {
           className="nav-left"
           onClick={() => setActiveSection("hero")}
         >
-          <span className="logo-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M3 10.5L12 3l9 7.5" stroke="currentColor" strokeWidth="1.8"/>
-              <path d="M5 10v10h14V10" stroke="currentColor" strokeWidth="1.8"/>
-            </svg>
-          </span>
+          <img
+            src="/assets/logo/logo.jpeg"   // 👈 you will replace this
+            alt="FindMyCrib Logo"
+            className="logo-img"
+          />
+
           <span className="logo-text">FindMyCrib</span>
         </div>
 
