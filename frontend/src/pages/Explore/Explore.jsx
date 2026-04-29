@@ -18,7 +18,7 @@ function Explore({
   setCompareList,
 }) {
   const inputRef = useRef(null);
-
+  const [typeOpen, setTypeOpen] = useState(false);
   const [selectedModal, setSelectedModal] = useState(null);
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -215,15 +215,41 @@ function Explore({
           onChange={(e) => setBudget(e.target.value)}
         />
 
-        <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option value="">All</option>
-          <option value="1bhk">1 BHK Apartment</option>
-          <option value="2bhk">2 BHK Apartment</option>
-          <option value="3bhk">3 BHK Apartment</option>
-          <option value="4bhk">4 BHK Apartment</option>
-          <option value="villa">Villa</option>
-          <option value="plot">Plot</option>
-        </select>
+        <div className="type-wrapper">
+          <div
+            className="custom-select"
+            onClick={() => setTypeOpen((prev) => !prev)}
+          >
+            {type
+              ? type.replace("bhk", " BHK Apartment").replace("villa", "Villa").replace("plot", "Plot")
+              : "All"}
+          </div>
+
+          {typeOpen && (
+            <div className="custom-dropdown">
+              {[
+                { label: "All", value: "" },
+                { label: "1 BHK Apartment", value: "1bhk" },
+                { label: "2 BHK Apartment", value: "2bhk" },
+                { label: "3 BHK Apartment", value: "3bhk" },
+                { label: "4 BHK Apartment", value: "4bhk" },
+                { label: "Villa", value: "villa" },
+                { label: "Plot", value: "plot" },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="custom-option"
+                  onClick={() => {
+                    setType(item.value);
+                    setTypeOpen(false);
+                  }}
+                >
+                  {item.label}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         <button
           className="primary-btn"
