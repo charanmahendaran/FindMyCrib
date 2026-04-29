@@ -234,3 +234,138 @@
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+/* 🔥 LOADING (MATCHES EXPLORE/COMPARE STYLE) */
+.price-loading {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.loader-card {
+  padding: 40px 50px;
+  border-radius: 18px;
+
+  background: rgba(23, 23, 23, 0.6);
+  backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  text-align: center;
+  animation: fadeUp 0.4s ease;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+
+  margin: 0 auto 20px;
+
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top: 3px solid #22c55e;
+
+  animation: spin 1s linear infinite;
+}
+
+.loader-card h3 {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.loader-card p {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 🔥 FULL OVERLAY (FIXES CENTER ISSUE) */
+.price-loading-overlay {
+  position: fixed;
+
+  /* 👇 THIS IS THE KEY FIX */
+  top: 70px; /* match your navbar height */
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+
+  z-index: 999;
+}
+
+/* GLASS CARD */
+.loader-card {
+  padding: 40px 50px;
+  border-radius: 18px;
+
+  background: rgba(23, 23, 23, 0.65);
+  backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(255,255,255,0.1);
+
+  text-align: center;
+  animation: fadeUp 0.4s ease;
+
+  /* 🔥 KEY FIX */
+  transform: translateY(20px);
+}
+
+/* SPINNER */
+.spinner {
+  width: 42px;
+  height: 42px;
+
+  margin: 0 auto 20px;
+
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top: 3px solid #22c55e;
+
+  animation: spin 1s linear infinite;
+}
+
+/* TEXT */
+.loader-card h3 {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.loader-card p {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* 🔥 TYPING DOTS EFFECT */
+.dots::after {
+  content: "";
+  animation: dots 1.2s infinite steps(3);
+}
+
+@keyframes dots {
+  0% { content: ""; }
+  33% { content: "."; }
+  66% { content: ".."; }
+  100% { content: "..."; }
+}
+
+/* OPTIONAL: subtle text fade pulse */
+.typing-text {
+  animation: textPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+

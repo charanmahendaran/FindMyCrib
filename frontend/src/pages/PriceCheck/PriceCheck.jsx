@@ -114,21 +114,19 @@ function PriceCheck({ property, setActiveSection }) {
         </div>
       </div>
 
-      {/* 🔄 LOADING SKELETON */}
+      {/* 🔥 NEW LOADING (REPLACED SKELETON) */}
       {loading && (
-        <>
-          <div className="cards-row">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="result-card skeleton-card">
-                <div className="skeleton title"></div>
-                <div className="skeleton text"></div>
-              </div>
-            ))}
-          </div>
+        <div className="price-loading-overlay">
+          <div className="loader-card">
+            <div className="spinner"></div>
 
-          <div className="flag-item single skeleton-line"></div>
-          <div className="summary-box skeleton-block"></div>
-        </>
+            <h3>Analyzing Property</h3>
+
+            <p className="typing-text">
+              Evaluating price, risks & trends<span className="dots"></span>
+            </p>
+          </div>
+        </div>
       )}
 
       {/* ✅ RESULT */}
@@ -157,7 +155,6 @@ function PriceCheck({ property, setActiveSection }) {
             </div>
           </div>
 
-          {/* 🔥 SINGLE FLAG */}
           <div className="flags-section">
             <h4>Risk Insight</h4>
             <div className="flag-item single">
@@ -165,7 +162,6 @@ function PriceCheck({ property, setActiveSection }) {
             </div>
           </div>
 
-          {/* 💡 SUMMARY */}
           <div className="summary-section">
             <h4>AI Insight</h4>
             <div className="summary-box">

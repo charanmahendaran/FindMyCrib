@@ -16,24 +16,75 @@
 .filter-panel {
   display: flex;
   justify-content: center;
-  /* 🔥 center horizontally */
   align-items: center;
   position: relative;
   z-index: 50;
+
   gap: 14px;
   margin: 20px auto;
 
   padding: 16px 18px;
   border-radius: 16px;
 
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
+  /* ❌ REMOVE HARD BORDER */
+  border: none;
 
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* ✨ SOFT GLASS BACKGROUND */
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(16px);
 
   max-width: 1200px;
-  /* 🔥 same system width */
   width: 100%;
+
+  /* 🌌 AMBIENT SHADOW (DEFAULT STATE) */
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  transition: all 0.35s ease;
+}
+
+/* 🌟 INTERACTIVE GLOW */
+.filter-panel:focus-within {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.75),
+    0 0 25px rgba(46, 125, 50, 0.25),  /* subtle green glow */
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* 🪄 HOVER (LIGHTER THAN FOCUS) */
+.filter-panel:hover {
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ✨ LIGHT SWEEP EFFECT */
+.filter-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.06),
+    transparent
+  );
+
+  opacity: 0;
+  transition: opacity 0.4s ease;
+
+  pointer-events: none;
+}
+
+/* 🧠 Trigger on hover/focus */
+.filter-panel:hover::before,
+.filter-panel:focus-within::before {
+  opacity: 1;
 }
 
 /* ================= INPUTS ================= */
@@ -305,10 +356,15 @@
 }
 
 .custom-select {
-  padding: 10px 14px;
-  border-radius: 10px;
+  padding: 0 14px;              /* remove vertical padding */
+  height: 37px;                 /* 🔥 match input height exactly */
 
+  display: flex;
+  align-items: center;          /* vertical centering */
+
+  border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+
   background: rgba(255, 255, 255, 0.05);
   color: #e0e0e0;
 

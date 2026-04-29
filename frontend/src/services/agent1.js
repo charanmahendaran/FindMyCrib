@@ -66,7 +66,10 @@ export async function fetchProperties(filters) {
   console.log("Payload:", payload);
 
   // 🔥 UNIQUE CACHE KEY PER FILTER
-  const cacheKey = CACHE_PREFIX + JSON.stringify(payload);
+  const cacheKey =
+    CACHE_PREFIX +
+    (USE_MOCK ? "mock_" : "api_") +
+    JSON.stringify(payload);
 
   // 🔁 CHECK CACHE FIRST
   const cached = sessionStorage.getItem(cacheKey);
@@ -75,13 +78,13 @@ export async function fetchProperties(filters) {
     return JSON.parse(cached);
   }
 
- if (USE_MOCK) {
-  console.log("Using MOCK data:", mockData);
+  if (USE_MOCK) {
+    console.log("Using MOCK data:", mockData);
 
-  await new Promise((r) => setTimeout(r, 300));
+    await new Promise((r) => setTimeout(r, 300));
 
-  return normalizeProperties(mockData);
-}
+    return normalizeProperties(mockData);
+  }
 
   // 🌐 REAL API MODE
   try {
