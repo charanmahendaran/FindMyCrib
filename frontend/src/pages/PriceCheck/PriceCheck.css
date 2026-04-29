@@ -5,7 +5,23 @@
   color: #e5e5e5;
 }
 
-/* PROPERTY */
+/* 🔥 FADE UP ANIMATION */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section > * {
+  animation: fadeUp 0.5s ease forwards;
+}
+
+/* 🔹 PROPERTY */
 .property-main {
   display: flex;
   gap: 20px;
@@ -15,10 +31,17 @@
   padding: 20px;
 
   background: rgba(23, 23, 23, 0.6);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
 
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1px solid rgba(255,255,255,0.08);
+
+  transition: all 0.3s ease;
+}
+
+.property-main:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.15);
 }
 
 .property-main img {
@@ -26,9 +49,15 @@
   height: 150px;
   object-fit: cover;
   border-radius: 12px;
+
+  transition: transform 0.4s ease;
 }
 
-/* GRID */
+.property-main:hover img {
+  transform: scale(1.05);
+}
+
+/* 🔹 GRID */
 .cards-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -36,10 +65,8 @@
   margin-top: 25px;
 }
 
-/* CARD */
+/* 🔹 CARD */
 .result-card {
-  min-width: 0;
-  width: 100%;
   min-height: 140px;
 
   display: flex;
@@ -49,53 +76,70 @@
   padding: 20px;
 
   background: rgba(23, 23, 23, 0.6);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
 
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1px solid rgba(255,255,255,0.08);
 
   transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
 
+/* 🔥 PARALLAX HOVER */
 .result-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* subtle glow */
+.result-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.result-card:hover::after {
+  opacity: 1;
 }
 
 .result-card h4 {
   margin-bottom: 8px;
-  color: #a3a3a3;
+  color: #9ca3af;
 }
 
-/* RISK COLORS */
+.result-card p {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* 🟢🟡🔴 SEMANTIC COLORS (UPGRADED) */
+
 .status.low {
-  background: rgba(34, 197, 94, 0.12);
-  border: 1px solid rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.10);
+  border: 1px solid rgba(34, 197, 94, 0.25);
   color: #22c55e;
+  box-shadow: 0 0 20px rgba(34,197,94,0.1);
 }
 
 .status.medium {
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: rgba(245, 158, 11, 0.10);
+  border: 1px solid rgba(245, 158, 11, 0.25);
   color: #f59e0b;
+  box-shadow: 0 0 20px rgba(245,158,11,0.1);
 }
 
 .status.high {
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.10);
+  border: 1px solid rgba(239, 68, 68, 0.25);
   color: #ef4444;
+  box-shadow: 0 0 20px rgba(239,68,68,0.1);
 }
 
-/* LOADING */
-.insight {
-  margin-top: 25px;
-  padding: 18px;
-
-  background: rgba(23, 23, 23, 0.6);
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-/* 🔥 SINGLE FLAG */
+/* 🔹 FLAG */
 .flags-section {
   margin-top: 20px;
 }
@@ -112,12 +156,17 @@
   background: rgba(255, 180, 0, 0.08);
   border: 1px solid rgba(255, 180, 0, 0.2);
 
-  font-size: 13.5px;
-  line-height: 1.5;
   color: #e6c27a;
+
+  transition: all 0.25s ease;
 }
 
-/* SUMMARY */
+.flag-item.single:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 200, 0, 0.4);
+}
+
+/* 🔹 SUMMARY */
 .summary-section {
   margin-top: 25px;
 }
@@ -131,14 +180,21 @@
   padding: 18px;
   border-radius: 14px;
 
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.08);
 
   line-height: 1.6;
   color: #ddd;
+
+  transition: all 0.25s ease;
 }
 
-/* 🔥 SKELETON BASE */
+.summary-box:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* 🔥 SKELETON */
 .skeleton {
   background: linear-gradient(
     90deg,
@@ -149,11 +205,6 @@
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite linear;
   border-radius: 6px;
-}
-
-/* CARD SKELETON */
-.skeleton-card {
-  pointer-events: none;
 }
 
 .skeleton.title {
@@ -167,26 +218,19 @@
   height: 18px;
 }
 
-/* FLAG LINE */
 .skeleton-line {
   height: 45px;
   margin-top: 20px;
   border-radius: 12px;
 }
 
-/* SUMMARY BLOCK */
 .skeleton-block {
   height: 90px;
   margin-top: 20px;
   border-radius: 14px;
 }
 
-/* ANIMATION */
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
