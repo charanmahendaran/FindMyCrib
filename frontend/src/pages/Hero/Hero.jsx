@@ -3,10 +3,19 @@ import "./Hero.css";
 function Hero({ setActiveSection }) {
   return (
     <div className="hero-container">
+      <div className="hero-bg-glow"></div>
+
       <div className="hero-content">
 
-        <h1>AI-Powered Real Estate Intelligence</h1>
-        <p>Discover. Analyze. Compare. Decide.</p>
+        <h1 className="hero-title">
+          <span>AI-Powered</span>
+          <br />
+          Real Estate Intelligence
+        </h1>
+
+        <p className="hero-sub">
+          Discover. Analyze. Compare. Decide.
+        </p>
 
         <button
           className="hero-btn"
@@ -19,7 +28,8 @@ function Hero({ setActiveSection }) {
             }, 150);
           }}
         >
-          Let’s Explore
+          <span>Let’s Explore</span>
+          <div className="btn-glow"></div>
         </button>
 
       </div>

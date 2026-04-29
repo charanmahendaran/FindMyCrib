@@ -1,6 +1,14 @@
 import "./Navbar.css";
 
 function Navbar({ setActiveSection, activeSection }) {
+  const navItems = [
+    { id: "explore", label: "Explore" },
+    { id: "price", label: "Price Check" },
+    { id: "compare", label: "Compare" },
+    { id: "finance", label: "Finance" },
+    { id: "booking", label: "Book Visit" },
+  ];
+
   return (
     <div className="navbar">
       <div className="navbar-inner">
@@ -11,66 +19,26 @@ function Navbar({ setActiveSection, activeSection }) {
           onClick={() => setActiveSection("hero")}
         >
           <span className="logo-icon">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M3 10.5L12 3l9 7.5" />
-              <path d="M5 10v10h14V10" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M3 10.5L12 3l9 7.5" stroke="currentColor" strokeWidth="1.8"/>
+              <path d="M5 10v10h14V10" stroke="currentColor" strokeWidth="1.8"/>
             </svg>
           </span>
-
           <span className="logo-text">FindMyCrib</span>
         </div>
 
         {/* CENTER */}
         <div className="nav-center">
-          <button
-            className={activeSection === "explore" ? "active" : ""}
-            onClick={() => setActiveSection("explore")}
-          >
-            Explore
-          </button>
-
-          <button
-            className={activeSection === "price" ? "active" : ""}
-            onClick={() => setActiveSection("price")}
-          >
-            Price Check
-          </button>
-
-          <button
-            className={activeSection === "compare" ? "active" : ""}
-            onClick={() => setActiveSection("compare")}
-          >
-            Compare
-          </button>
-
-          <button
-            className={activeSection === "finance" ? "active" : ""}
-            onClick={() => setActiveSection("finance")}
-          >
-            Finance
-          </button>
-
-          <button
-            className={activeSection === "booking" ? "active" : ""}
-            onClick={() => setActiveSection("booking")}
-          >
-            Book Visit
-          </button>
-        </div>
-
-        {/* RIGHT */}
-        <div className="nav-right">
-          <button className="login-btn">Sign In</button>
-          <button className="signup-btn">Create Account</button>
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              className={`nav-pill ${activeSection === item.id ? "active" : ""}`}
+              onClick={() => setActiveSection(item.id)}
+            >
+              <span>{item.label}</span>
+              <div className="hover-glow"></div>
+            </button>
+          ))}
         </div>
 
       </div>
