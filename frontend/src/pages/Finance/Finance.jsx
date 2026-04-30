@@ -13,15 +13,21 @@ function Finance({ property, setActiveSection }) {
   const [loading, setLoading] = useState(false);
   const [trigger, setTrigger] = useState(0);
 
-  // 🔥 CONTROL SYSTEM
   const [hasCalculated, setHasCalculated] = useState(false);
   const [lastPayloadKey, setLastPayloadKey] = useState(null);
 
-  // 🔥 SCROLL TRIGGER
   const donutRef = useRef(null);
   const [showDonut, setShowDonut] = useState(false);
 
+  const [progress, setProgress] = useState(0);
+
   const image = property ? getPropertyImage(property) : "";
+
+  // ✅ FORMATTER
+  const formatCurrency = (val) => {
+    if (!val && val !== 0) return "";
+    return "₹ " + Number(val).toLocaleString("en-IN");
+  };
 
   // PRICE PARSER
   const getNumericPrice = () => {
@@ -44,21 +50,23 @@ function Finance({ property, setActiveSection }) {
     return "Unknown";
   };
 
-  // 🔥 MAIN LOGIC (CACHE + CONTROL)
+  // 🔥 MAIN LOGIC
   useEffect(() => {
     if (!property || trigger === 0) return;
 
     const run = async () => {
+      const safeIncome = Number(income) || 0;
+      const safeDownPayment = Number(downPayment) || 0;
+
       const payload = {
-        price: getNumericPrice() - downPayment,
-        income,
+        price: getNumericPrice() - safeDownPayment,
+        income: safeIncome,
         interest_rate: interestRate,
         tenure_years: tenure,
       };
 
       const newKey = JSON.stringify(payload);
 
-      // SAME INPUT → reuse
       if (newKey === lastPayloadKey && result) {
         setResult({ ...result });
         setHasCalculated(true);
@@ -78,7 +86,7 @@ function Finance({ property, setActiveSection }) {
     run();
   }, [trigger]);
 
-  // 🔥 SCROLL OBSERVER
+  // SCROLL OBSERVER
   useEffect(() => {
     if (!donutRef.current) return;
 
@@ -96,14 +104,13 @@ function Finance({ property, setActiveSection }) {
     return () => observer.disconnect();
   }, [donutRef, result]);
 
-  // 🔥 DONUT PROGRESS
-  const [progress, setProgress] = useState(0);
-
+  // DONUT PROGRESS
   useEffect(() => {
     if (!result || !showDonut) return;
 
     let start = 0;
-    const target = Math.min(100, (result.emi / income) * 100);
+    const safeIncome = Number(income) || 1;
+    const target = Math.min(100, (result.emi / safeIncome) * 100);
 
     const interval = setInterval(() => {
       start += 1.5;
@@ -117,6 +124,7 @@ function Finance({ property, setActiveSection }) {
     return () => clearInterval(interval);
   }, [showDonut, result]);
 
+  // ✅ EMPTY STATE (fix for blank screen)
   if (!property) {
     return (
       <div className="empty-state">
@@ -137,7 +145,6 @@ function Finance({ property, setActiveSection }) {
 
   return (
     <div className="section finance-wrapper">
-
       <h2>Financial Analysis</h2>
 
       {/* PROPERTY */}
@@ -157,31 +164,68 @@ function Finance({ property, setActiveSection }) {
       <div className="finance-inputs">
         <div className="input-group">
           <label>Income</label>
-          <input type="number" value={income}
-            onChange={(e) => setIncome(Math.max(10000, Number(e.target.value)))} />
+          <input
+            type="number"
+            value={income}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "") setIncome("");
+              else setIncome(Number(val));
+            }}
+            onBlur={() => {
+              if (!income || income < 10000) {
+                setIncome(10000);
+              }
+            }}
+          />
         </div>
 
         <div className="input-group">
           <label>Down Payment</label>
-          <input type="number" value={downPayment}
-            onChange={(e) => setDownPayment(Math.max(0, Number(e.target.value)))} />
+          <input
+            type="number"
+            value={downPayment}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "") setDownPayment("");
+              else setDownPayment(Number(val));
+            }}
+            onBlur={() => {
+              if (!downPayment || downPayment < 300000) {
+                setDownPayment(300000);
+              }
+            }}
+          />
         </div>
 
         <div className="input-group">
           <label>Tenure</label>
-          <input type="number" value={tenure}
-            onChange={(e) => setTenure(Math.min(30, Math.max(1, Number(e.target.value))))} />
+          <input
+            type="number"
+            value={tenure}
+            onChange={(e) =>
+              setTenure(Math.min(30, Math.max(1, Number(e.target.value))))
+            }
+          />
         </div>
 
         <div className="input-group">
           <label>Interest</label>
-          <input type="number" value={interestRate}
-            onChange={(e) => setInterestRate(Math.min(15, Math.max(5, Number(e.target.value))))} />
+          <input
+            type="number"
+            value={interestRate}
+            onChange={(e) =>
+              setInterestRate(Math.min(15, Math.max(5, Number(e.target.value))))
+            }
+          />
         </div>
 
         <div className="input-group btn-group">
           <label>&nbsp;</label>
-          <button className="finance-btn" onClick={() => setTrigger(p => p + 1)}>
+          <button
+            className="finance-btn"
+            onClick={() => setTrigger((p) => p + 1)}
+          >
             Calculate
           </button>
         </div>
@@ -193,7 +237,7 @@ function Finance({ property, setActiveSection }) {
           <div key={lastPayloadKey} className="cards-row fade-in">
             <div className="result-card">
               <h4>Monthly EMI</h4>
-              <p>₹ {result.emi?.toLocaleString()}</p>
+              <p>{formatCurrency(result.emi)}</p>
             </div>
 
             <div className="result-card">
@@ -207,12 +251,13 @@ function Finance({ property, setActiveSection }) {
             </div>
           </div>
 
-          {/* DONUT (SCROLL TRIGGERED) */}
-          <div ref={donutRef} className={`affordability-card ${showDonut ? "show" : ""}`}>
-
+          {/* DONUT */}
+          <div
+            ref={donutRef}
+            className={`affordability-card ${showDonut ? "show" : ""}`}
+          >
             <div className="affordability-left">
               <div className="ring-wrapper">
-
                 <div className="ring-bg"></div>
 
                 <div
@@ -224,7 +269,6 @@ function Finance({ property, setActiveSection }) {
                   <span>{Math.round(progress)}%</span>
                   <p>EMI Load</p>
                 </div>
-
               </div>
             </div>
 
@@ -233,21 +277,24 @@ function Finance({ property, setActiveSection }) {
                 {result.affordability === "yes"
                   ? "Safe Zone"
                   : result.affordability === "risky"
-                    ? "Moderate Load"
-                    : "High Leverage"}
+                  ? "Moderate Load"
+                  : "High Leverage"}
               </h3>
 
               <p className="emi-value">
-                ₹ {result.emi?.toLocaleString()}
+                {formatCurrency(result.emi)}
               </p>
 
               <p className="ratio">
-                EMI is {Math.round((result.emi / income) * 100)}% of income
+                EMI is{" "}
+                {Math.round(
+                  (result.emi / (Number(income) || 1)) * 100
+                )}%
+                of income
               </p>
 
               <div className={`status-dot ${result.affordability}`}></div>
             </div>
-
           </div>
 
           <div className={`insight ${showDonut ? "fade-in delay-1" : ""}`}>
@@ -264,7 +311,6 @@ function Finance({ property, setActiveSection }) {
           </div>
         </div>
       )}
-
     </div>
   );
 }
