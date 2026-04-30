@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Finance.css";
 import { fetchFinanceAnalysis } from "../../services/agent4";
 import { getPropertyImage } from "../../utils/imageMapper";
@@ -13,10 +13,17 @@ function Finance({ property, setActiveSection }) {
   const [loading, setLoading] = useState(false);
   const [trigger, setTrigger] = useState(0);
 
-  const [progress, setProgress] = useState(0);
+  // 🔥 CONTROL SYSTEM
+  const [hasCalculated, setHasCalculated] = useState(false);
+  const [lastPayloadKey, setLastPayloadKey] = useState(null);
+
+  // 🔥 SCROLL TRIGGER
+  const donutRef = useRef(null);
+  const [showDonut, setShowDonut] = useState(false);
 
   const image = getPropertyImage(property);
 
+  // PRICE PARSER
   const getNumericPrice = () => {
     if (!property?.price) return 0;
     let value = parseFloat(property.price.replace(/[^\d.]/g, ""));
@@ -37,12 +44,11 @@ function Finance({ property, setActiveSection }) {
     return "Unknown";
   };
 
+  // 🔥 MAIN LOGIC (CACHE + CONTROL)
   useEffect(() => {
     if (!property || trigger === 0) return;
 
     const run = async () => {
-      setLoading(true);
-
       const payload = {
         price: getNumericPrice() - downPayment,
         income,
@@ -50,18 +56,51 @@ function Finance({ property, setActiveSection }) {
         tenure_years: tenure,
       };
 
+      const newKey = JSON.stringify(payload);
+
+      // SAME INPUT → reuse
+      if (newKey === lastPayloadKey && result) {
+        setResult({ ...result });
+        setHasCalculated(true);
+        return;
+      }
+
+      setLoading(true);
+
       const res = await fetchFinanceAnalysis(payload);
 
       setResult(res);
+      setLastPayloadKey(newKey);
+      setHasCalculated(true);
       setLoading(false);
     };
 
     run();
   }, [trigger]);
 
-  // 🔥 Apple-style animation
+  // 🔥 SCROLL OBSERVER
   useEffect(() => {
-    if (!result) return;
+    if (!donutRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShowDonut(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(donutRef.current);
+
+    return () => observer.disconnect();
+  }, [donutRef, result]);
+
+  // 🔥 DONUT PROGRESS
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    if (!result || !showDonut) return;
 
     let start = 0;
     const target = Math.min(100, (result.emi / income) * 100);
@@ -76,7 +115,7 @@ function Finance({ property, setActiveSection }) {
     }, 10);
 
     return () => clearInterval(interval);
-  }, [result]);
+  }, [showDonut, result]);
 
   if (!property) return null;
 
@@ -133,9 +172,9 @@ function Finance({ property, setActiveSection }) {
       </div>
 
       {/* RESULTS */}
-      {result && (
+      {hasCalculated && result && (
         <>
-          <div className="cards-row fade-in">
+          <div key={lastPayloadKey} className="cards-row fade-in">
             <div className="result-card">
               <h4>Monthly EMI</h4>
               <p>₹ {result.emi?.toLocaleString()}</p>
@@ -152,20 +191,17 @@ function Finance({ property, setActiveSection }) {
             </div>
           </div>
 
-          {/* 🔥 APPLE RING */}
-          <div className="affordability-card">
+          {/* DONUT (SCROLL TRIGGERED) */}
+          <div ref={donutRef} className={`affordability-card ${showDonut ? "show" : ""}`}>
 
             <div className="affordability-left">
-
               <div className="ring-wrapper">
 
                 <div className="ring-bg"></div>
 
                 <div
                   className="ring-progress"
-                  style={{
-                    "--progress": `${progress}%`
-                  }}
+                  style={{ "--progress": `${progress}%` }}
                 ></div>
 
                 <div className="ring-center">
@@ -174,7 +210,6 @@ function Finance({ property, setActiveSection }) {
                 </div>
 
               </div>
-
             </div>
 
             <div className="affordability-right">
@@ -199,7 +234,7 @@ function Finance({ property, setActiveSection }) {
 
           </div>
 
-          <div className="insight fade-in delay-1">
+          <div className={`insight ${showDonut ? "fade-in delay-1" : ""}`}>
             💡 {result.reason}
           </div>
         </>
@@ -213,6 +248,7 @@ function Finance({ property, setActiveSection }) {
           </div>
         </div>
       )}
+
     </div>
   );
 }

@@ -447,3 +447,55 @@ input[type="number"] {
   font-size: 12px;
   color: #aaa;
 }
+
+/* SCROLL ENTRY */
+.affordability-card {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.6s ease;
+}
+
+.affordability-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* APPLE RING */
+.ring-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.ring-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+}
+
+.ring-progress {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+
+  background: conic-gradient(
+    #00e5ff var(--progress),
+    transparent 0
+  );
+
+  mask: radial-gradient(circle, transparent 60%, black 61%);
+  -webkit-mask: radial-gradient(circle, transparent 60%, black 61%);
+
+  transition: all 0.6s ease;
+  filter: drop-shadow(0 0 8px #00e5ff);
+}
+
+.ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
