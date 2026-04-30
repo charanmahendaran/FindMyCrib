@@ -7,6 +7,11 @@ function PriceCheck({ property, setActiveSection }) {
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // 🔥 staged reveal states
+  const [showCards, setShowCards] = useState(false);
+  const [showFlag, setShowFlag] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
+
   const lastKeyRef = useRef(null);
 
   if (!property) {
@@ -59,7 +64,6 @@ function PriceCheck({ property, setActiveSection }) {
     if (!range) return "";
 
     const parts = range.split("-");
-
     if (parts.length !== 2) return range;
 
     const min = parsePrice(parts[0]);
@@ -68,13 +72,17 @@ function PriceCheck({ property, setActiveSection }) {
     return `${formatPrice(min)} - ${formatPrice(max)}`;
   };
 
+  // ✅ FIXED SUMMARY FORMATTER
   const formatSummary = (text) => {
     if (!text) return "";
 
-    return text.replace(/(\d+)L/g, (_, num) => {
-      const value = Number(num) * 100000;
-      return formatPrice(value);
-    });
+    return text
+      .replace(/(\d+)L/g, (_, num) => {
+        return formatPrice(Number(num) * 100000);
+      })
+      .replace(/\b\d{6,}\b/g, (num) => {
+        return formatPrice(Number(num));
+      });
   };
 
   useEffect(() => {
@@ -85,9 +93,18 @@ function PriceCheck({ property, setActiveSection }) {
 
     const load = async () => {
       setLoading(true);
+      setShowCards(false);
+      setShowFlag(false);
+      setShowSummary(false);
+
       const res = await fetchPriceAnalysis(property);
       setAnalysis(res);
       setLoading(false);
+
+      // 🔥 staged reveal timings
+      setTimeout(() => setShowCards(true), 100);
+      setTimeout(() => setShowFlag(true), 400);
+      setTimeout(() => setShowSummary(true), 700);
     };
 
     load();
@@ -114,7 +131,7 @@ function PriceCheck({ property, setActiveSection }) {
         </div>
       </div>
 
-      {/* 🔥 NEW LOADING (REPLACED SKELETON) */}
+      {/* LOADING */}
       {loading && (
         <div className="price-loading-overlay">
           <div className="loader-card">
@@ -129,45 +146,54 @@ function PriceCheck({ property, setActiveSection }) {
         </div>
       )}
 
-      {/* ✅ RESULT */}
+      {/* RESULT */}
       {analysis && !loading && (
         <>
-          <div className="cards-row">
-            <div className="result-card">
-              <h4>Price Status</h4>
-              <p>{analysis.price_analysis.price_status}</p>
-            </div>
+          {/* 🔥 CARDS */}
+          {showCards && (
+            <div className="cards-row fade-in">
+              <div className="result-card">
+                <h4>Price Status</h4>
+                <p>{analysis.price_analysis.price_status}</p>
+              </div>
 
-            <div className="result-card">
-              <h4>Estimated Range</h4>
-              <p>
-                {formatRange(
-                  analysis.price_analysis.estimated_price_range
-                )}
-              </p>
-            </div>
+              <div className="result-card">
+                <h4>Estimated Range</h4>
+                <p>
+                  {formatRange(
+                    analysis.price_analysis.estimated_price_range
+                  )}
+                </p>
+              </div>
 
-            <div
-              className={`result-card status ${analysis.risk_check.risk_level}`}
-            >
-              <h4>Risk Level</h4>
-              <p>{analysis.risk_check.risk_level}</p>
+              <div
+                className={`result-card status ${analysis.risk_check.risk_level}`}
+              >
+                <h4>Risk Level</h4>
+                <p>{analysis.risk_check.risk_level}</p>
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="flags-section">
-            <h4>Risk Insight</h4>
-            <div className="flag-item single">
-              ⚠️ {singleFlag}
+          {/* 🔥 FLAG */}
+          {showFlag && (
+            <div className="flags-section fade-in">
+              <h4>Risk Insight</h4>
+              <div className="flag-item single">
+                ⚠️ {singleFlag}
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="summary-section">
-            <h4>AI Insight</h4>
-            <div className="summary-box">
-              💡 {formatSummary(analysis.summary)}
+          {/* 🔥 SUMMARY */}
+          {showSummary && (
+            <div className="summary-section fade-in">
+              <h4>AI Insight</h4>
+              <div className="summary-box">
+                💡 {formatSummary(analysis.summary)}
+              </div>
             </div>
-          </div>
+          )}
         </>
       )}
     </div>

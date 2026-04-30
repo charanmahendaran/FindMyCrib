@@ -21,7 +21,7 @@ function Finance({ property, setActiveSection }) {
   const donutRef = useRef(null);
   const [showDonut, setShowDonut] = useState(false);
 
-  const image = getPropertyImage(property);
+  const image = property ? getPropertyImage(property) : "";
 
   // PRICE PARSER
   const getNumericPrice = () => {
@@ -117,7 +117,23 @@ function Finance({ property, setActiveSection }) {
     return () => clearInterval(interval);
   }, [showDonut, result]);
 
-  if (!property) return null;
+  if (!property) {
+    return (
+      <div className="empty-state">
+        <div className="empty-card">
+          <h2>No property selected</h2>
+          <p>Select a property from Explore</p>
+
+          <p
+            className="empty-cta"
+            onClick={() => setActiveSection("explore")}
+          >
+            Go to Explore →
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="section finance-wrapper">
@@ -142,30 +158,30 @@ function Finance({ property, setActiveSection }) {
         <div className="input-group">
           <label>Income</label>
           <input type="number" value={income}
-            onChange={(e)=>setIncome(Math.max(10000, Number(e.target.value)))} />
+            onChange={(e) => setIncome(Math.max(10000, Number(e.target.value)))} />
         </div>
 
         <div className="input-group">
           <label>Down Payment</label>
           <input type="number" value={downPayment}
-            onChange={(e)=>setDownPayment(Math.max(0, Number(e.target.value)))} />
+            onChange={(e) => setDownPayment(Math.max(0, Number(e.target.value)))} />
         </div>
 
         <div className="input-group">
           <label>Tenure</label>
           <input type="number" value={tenure}
-            onChange={(e)=>setTenure(Math.min(30, Math.max(1, Number(e.target.value))))}/>
+            onChange={(e) => setTenure(Math.min(30, Math.max(1, Number(e.target.value))))} />
         </div>
 
         <div className="input-group">
           <label>Interest</label>
           <input type="number" value={interestRate}
-            onChange={(e)=>setInterestRate(Math.min(15, Math.max(5, Number(e.target.value))))}/>
+            onChange={(e) => setInterestRate(Math.min(15, Math.max(5, Number(e.target.value))))} />
         </div>
 
         <div className="input-group btn-group">
           <label>&nbsp;</label>
-          <button className="finance-btn" onClick={()=>setTrigger(p=>p+1)}>
+          <button className="finance-btn" onClick={() => setTrigger(p => p + 1)}>
             Calculate
           </button>
         </div>
@@ -217,8 +233,8 @@ function Finance({ property, setActiveSection }) {
                 {result.affordability === "yes"
                   ? "Safe Zone"
                   : result.affordability === "risky"
-                  ? "Moderate Load"
-                  : "High Leverage"}
+                    ? "Moderate Load"
+                    : "High Leverage"}
               </h3>
 
               <p className="emi-value">
