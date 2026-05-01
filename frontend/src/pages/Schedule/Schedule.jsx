@@ -79,16 +79,40 @@ function Booking({ property, setActiveSection }) {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+  
   useEffect(() => {
     if (finalMessage) {
       setTimeout(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      }, 400);
+        smoothScrollToTop();
+      }, 3000); // ✅ 3 second delay
     }
   }, [finalMessage]);
+
+  const smoothScrollToTop = () => {
+    const start = window.scrollY;
+    const duration = 1800; // 🔥 slower scroll (1.8s)
+    let startTime = null;
+
+    const easeInOutCubic = (t) =>
+      t < 0.5
+        ? 4 * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    const animate = (currentTime) => {
+      if (!startTime) startTime = currentTime;
+      const progress = (currentTime - startTime) / duration;
+
+      const eased = easeInOutCubic(Math.min(progress, 1));
+      window.scrollTo(0, start * (1 - eased));
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  };
+
   useEffect(() => {
     if (!showDetails) return;
 
@@ -110,8 +134,13 @@ function Booking({ property, setActiveSection }) {
   }, [showDetails]);
 
   const handleAnimationComplete = () => {
+    // start dissolve phase
     setShowParticle(false);
-    setShowDetails(true);
+
+    // delay card slightly so overlap happens
+    setTimeout(() => {
+      setShowDetails(true);
+    }, 120); // 👈 key for smooth morph
   };
 
   if (!property) {
@@ -375,19 +404,24 @@ function Booking({ property, setActiveSection }) {
 
         <div className="result-content">
 
-          <div className={`transition-shell ${showDetails ? "expanded" : ""}`}>
+          <div className={`transition-shell ${showDetails ? "expanded" : ""} ${!showParticle && !showDetails ? "dissolving" : ""}`}>
+
+            {/* LOADER */}
             {showParticle && !showDetails && (
               <ParticleAnimation onComplete={handleAnimationComplete} />
             )}
+
+            {/* BOOKING CARD INSIDE SAME SHELL */}
+            <Suspense fallback={null}>
+              {showDetails && apiData && (
+                <div className="booking-details-smooth">
+                  <BookingDetails apiData={apiData} timer={timer} />
+                </div>
+              )}
+            </Suspense>
+
           </div>
 
-          <Suspense fallback={null}>
-            {showDetails && apiData && (
-              <div className="booking-details-smooth">
-                <BookingDetails apiData={apiData} timer={timer} />
-              </div>
-            )}
-          </Suspense>
         </div>
       </div>
 

@@ -41,7 +41,7 @@ function BookingDetails({ apiData, timer }) {
 
         {/* TIMER */}
         <div className="auto-close-box">
-          ⏳ This will auto close in <strong>{timer}s</strong>
+          ⏳ This message will auto close in <strong>{timer}s</strong>
         </div>
 
       </div>
