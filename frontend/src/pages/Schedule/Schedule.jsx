@@ -2,10 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import "./Schedule.css";
 import { getPropertyImage } from "../../utils/imageMapper";
 
-function Booking({ property }) {
+function Booking({ property, setActiveSection }) {
   const [openTime, setOpenTime] = useState(false);
   const [openDate, setOpenDate] = useState(false);
-
+  const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const dropdownRef = useRef(null);
   const dateRef = useRef(null);
 
@@ -64,6 +67,23 @@ function Booking({ property }) {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+  if (!property) {
+    return (
+      <div className="empty-state">
+        <div className="empty-card">
+          <h2>No property selected</h2>
+          <p>Select a property from Explore</p>
+
+          <p
+            className="empty-cta"
+            onClick={() => setActiveSection("explore")}
+          >
+            Go to Explore →
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const image = getPropertyImage(property);
 
@@ -85,8 +105,45 @@ function Booking({ property }) {
       {/* FORM */}
       <div className="booking-form">
 
-        <input placeholder="Full Name" />
-        <input placeholder="Phone Number" />
+        <input
+          placeholder="Full Name"
+          value={name}
+          onChange={(e) => {
+            const value = e.target.value;
+            setName(value);
+
+            if (value.trim().length === 0) {
+              setNameError("Enter your name");
+            } else if (value.trim().length < 3) {
+              setNameError("Minimum 3 characters required");
+            } else {
+              setNameError("");
+            }
+          }}
+          className={nameError ? "error" : name ? "valid" : ""}
+        />
+
+        {nameError && <span className="error-text">{nameError}</span>}
+        <input
+          placeholder="Phone Number"
+          value={phone}
+          maxLength={10}
+          onChange={(e) => {
+            const value = e.target.value.replace(/\D/g, ""); // 🔥 only numbers
+            setPhone(value);
+
+            if (value.length === 0) {
+              setPhoneError("Enter phone number");
+            } else if (value.length < 10) {
+              setPhoneError("Enter valid phone number");
+            } else {
+              setPhoneError("");
+            }
+          }}
+          className={phoneError ? "error" : phone ? "valid" : ""}
+        />
+
+        {phoneError && <span className="error-text">{phoneError}</span>}
 
         <div className="row">
 
