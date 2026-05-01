@@ -7,6 +7,8 @@ function Booking({ property, setActiveSection }) {
   const [openTime, setOpenTime] = useState(false);
   const [openDate, setOpenDate] = useState(false);
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [nameError, setNameError] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
@@ -48,7 +50,6 @@ function Booking({ property, setActiveSection }) {
   };
 
   const calendarDays = openDate ? generateCalendar() : [];
-
   const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   /* ---------- TIME ---------- */
@@ -71,17 +72,14 @@ function Booking({ property, setActiveSection }) {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
   if (!property) {
     return (
       <div className="empty-state">
         <div className="empty-card">
           <h2>No property selected</h2>
           <p>Select a property from Explore</p>
-
-          <p
-            className="empty-cta"
-            onClick={() => setActiveSection("explore")}
-          >
+          <p className="empty-cta" onClick={() => setActiveSection("explore")}>
             Go to Explore →
           </p>
         </div>
@@ -90,11 +88,17 @@ function Booking({ property, setActiveSection }) {
   }
 
   const image = getPropertyImage(property);
+
   const handleConfirm = async () => {
     let hasError = false;
 
     if (name.trim().length < 3) {
       setNameError("Minimum 3 characters required");
+      hasError = true;
+    }
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailError("Enter valid email");
       hasError = true;
     }
 
@@ -111,11 +115,11 @@ function Booking({ property, setActiveSection }) {
     setLoading(true);
 
     try {
-      // 🔥 STEP 1
       setOverlayMessage("Checking availability...");
 
       const data = await scheduleVisit({
         user_name: name,
+        user_email: email,
         phone,
         date: form.date,
         time: form.time,
@@ -123,15 +127,10 @@ function Booking({ property, setActiveSection }) {
         location: property?.location,
       });
 
-      // 🔥 STEP 2
       setOverlayMessage("Confirming visit...");
-
-      // small delay for UX smoothness
       await new Promise((res) => setTimeout(res, 500));
 
-      // 🔥 STEP 3
       setOverlayMessage("Finalizing...");
-
       await new Promise((res) => setTimeout(res, 500));
 
       if (data?.status === "success") {
@@ -150,7 +149,6 @@ function Booking({ property, setActiveSection }) {
   return (
     <div className="section-container">
 
-      {/* PROPERTY */}
       <div className="booking-property">
         <div className="img-wrapper">
           <img src={image} alt="property" />
@@ -162,9 +160,9 @@ function Booking({ property, setActiveSection }) {
         </div>
       </div>
 
-      {/* FORM */}
       <div className="booking-form">
 
+        {/* NAME */}
         <input
           placeholder="Full Name"
           value={name}
@@ -182,6 +180,31 @@ function Booking({ property, setActiveSection }) {
           }}
           className={nameError ? "error" : name ? "valid" : ""}
         />
+        {nameError && <span className="error-text">{nameError}</span>}
+
+        {/* EMAIL */}
+        <input
+          placeholder="Email Address"
+          value={email}
+          onChange={(e) => {
+            const value = e.target.value;
+            setEmail(value);
+
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!value) {
+              setEmailError("Enter email");
+            } else if (!regex.test(value)) {
+              setEmailError("Enter valid email");
+            } else {
+              setEmailError("");
+            }
+          }}
+          className={emailError ? "error" : email ? "valid" : ""}
+        />
+        {emailError && <span className="error-text">{emailError}</span>}
+
+        {/* LOADER */}
         {loading && (
           <div className="form-overlay">
             <div className="overlay-content">
@@ -190,13 +213,14 @@ function Booking({ property, setActiveSection }) {
             </div>
           </div>
         )}
-        {nameError && <span className="error-text">{nameError}</span>}
+
+        {/* PHONE */}
         <input
           placeholder="Phone Number"
           value={phone}
           maxLength={10}
           onChange={(e) => {
-            const value = e.target.value.replace(/\D/g, ""); // 🔥 only numbers
+            const value = e.target.value.replace(/\D/g, "");
             setPhone(value);
 
             if (value.length === 0) {
@@ -209,16 +233,12 @@ function Booking({ property, setActiveSection }) {
           }}
           className={phoneError ? "error" : phone ? "valid" : ""}
         />
-
         {phoneError && <span className="error-text">{phoneError}</span>}
 
         <div className="row">
 
           {/* DATE */}
-          <div
-            className={`date-dropdown ${openDate ? "open" : ""}`}
-            ref={dateRef}
-          >
+          <div className={`date-dropdown ${openDate ? "open" : ""}`} ref={dateRef}>
             <div
               className={`date-selected ${form.date ? "valid" : ""}`}
               onClick={() => setOpenDate(!openDate)}
@@ -228,29 +248,21 @@ function Booking({ property, setActiveSection }) {
 
             {openDate && (
               <div className="calendar">
-
                 <div className="calendar-header">
-                  {today.toLocaleString("default", { month: "long" })}{" "}
-                  {today.getFullYear()}
+                  {today.toLocaleString("default", { month: "long" })} {today.getFullYear()}
                 </div>
 
-                {/* WEEKDAYS */}
                 <div className="calendar-weekdays">
-                  {weekdays.map((d) => (
-                    <span key={d}>{d}</span>
-                  ))}
+                  {weekdays.map((d) => <span key={d}>{d}</span>)}
                 </div>
 
                 <div className="calendar-grid">
                   {calendarDays.map((day) => (
                     <div
                       key={day.value}
-                      className={`calendar-day 
-                      ${form.date === day.value ? "active" : ""} 
-                              ${day.disabled ? "disabled" : ""}`}
+                      className={`calendar-day ${form.date === day.value ? "active" : ""} ${day.disabled ? "disabled" : ""}`}
                       onClick={() => {
                         if (day.disabled) return;
-
                         setForm({ ...form, date: day.value });
                         setOpenDate(false);
                       }}
@@ -259,16 +271,12 @@ function Booking({ property, setActiveSection }) {
                     </div>
                   ))}
                 </div>
-
               </div>
             )}
           </div>
 
           {/* TIME */}
-          <div
-            className={`time-dropdown ${openTime ? "open" : ""}`}
-            ref={dropdownRef}
-          >
+          <div className={`time-dropdown ${openTime ? "open" : ""}`} ref={dropdownRef}>
             <div
               className={`time-selected ${form.time ? "valid" : ""}`}
               onClick={() => setOpenTime(!openTime)}
@@ -278,7 +286,6 @@ function Booking({ property, setActiveSection }) {
 
             {openTime && (
               <div className="time-menu">
-
                 {timeSlots.map((slot) => (
                   <div
                     key={slot}
@@ -300,12 +307,12 @@ function Booking({ property, setActiveSection }) {
 
       <button
         className={`book-btn ${name.trim().length < 3 ||
+          !email ||
           phone.length !== 10 ||
           !form.date ||
           !form.time
           ? "disabled-btn"
-          : ""
-          }`}
+          : ""}`}
         onClick={handleConfirm}
       >
         Confirm Booking
