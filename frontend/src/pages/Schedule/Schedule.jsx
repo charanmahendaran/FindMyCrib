@@ -1,25 +1,34 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import "./Schedule.css";
 import { getPropertyImage } from "../../utils/imageMapper";
 import { scheduleVisit } from "../../services/agent5";
+import ParticleAnimation from "./ParticleAnimation";
+
+const BookingDetails = lazy(() => import("./BookingDetails"));
 
 function Booking({ property, setActiveSection }) {
   const [apiData, setApiData] = useState(null);
-  const [showAnimation, setShowAnimation] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-  const [timer, setTimer] = useState(10);
+  const [timer, setTimer] = useState(15);
   const [finalMessage, setFinalMessage] = useState(false);
-  const detailsRef = useRef(null);
-  const [openTime, setOpenTime] = useState(false);
-  const [openDate, setOpenDate] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [phone, setPhone] = useState("");
-  const [phoneError, setPhoneError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [showParticle, setShowParticle] = useState(false);
+
   const dropdownRef = useRef(null);
   const dateRef = useRef(null);
+  const resultRef = useRef(null);
+
+  const [openTime, setOpenTime] = useState(false);
+  const [openDate, setOpenDate] = useState(false);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [overlayMessage, setOverlayMessage] = useState("Checking availability...");
@@ -29,9 +38,6 @@ function Booking({ property, setActiveSection }) {
     time: "",
   });
 
-  const today = new Date();
-
-  /* ---------- CALENDAR ---------- */
   const generateCalendar = () => {
     const days = [];
     const today = new Date();
@@ -42,13 +48,10 @@ function Booking({ property, setActiveSection }) {
 
       const formatted = d.toISOString().split("T")[0];
 
-      const isPast = i < 0;
-      const isFutureLimit = i > 15;
-
       days.push({
         value: formatted,
         label: d.getDate(),
-        disabled: isPast || isFutureLimit,
+        disabled: i < 0 || i > 15,
       });
     }
 
@@ -58,14 +61,12 @@ function Booking({ property, setActiveSection }) {
   const calendarDays = openDate ? generateCalendar() : [];
   const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-  /* ---------- TIME ---------- */
   const timeSlots = [];
   for (let h = 9; h < 18; h++) {
     timeSlots.push(`${String(h).padStart(2, "0")}:00`);
     timeSlots.push(`${String(h).padStart(2, "0")}:30`);
   }
 
-  /* ---------- OUTSIDE CLICK ---------- */
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -80,20 +81,9 @@ function Booking({ property, setActiveSection }) {
   }, []);
 
   useEffect(() => {
-    if (!showAnimation) return;
-
-    const t = setTimeout(() => {
-      setShowAnimation(false);
-      setShowDetails(true);
-    }, 5000);
-
-    return () => clearTimeout(t);
-  }, [showAnimation]);
-
-  useEffect(() => {
     if (!showDetails) return;
 
-    let t = 10;
+    let t = 15;
     setTimer(t);
 
     const interval = setInterval(() => {
@@ -104,13 +94,16 @@ function Booking({ property, setActiveSection }) {
         clearInterval(interval);
         setShowDetails(false);
         setFinalMessage(true);
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }, 1000);
 
     return () => clearInterval(interval);
   }, [showDetails]);
+
+  const handleAnimationComplete = () => {
+    setShowParticle(false);
+    setShowDetails(true);
+  };
 
   if (!property) {
     return (
@@ -129,6 +122,8 @@ function Booking({ property, setActiveSection }) {
   const image = getPropertyImage(property);
 
   const handleConfirm = async () => {
+    setSubmitted(true);
+
     let hasError = false;
 
     if (name.trim().length < 3) {
@@ -146,16 +141,13 @@ function Booking({ property, setActiveSection }) {
       hasError = true;
     }
 
-    if (!form.date) hasError = true;
-    if (!form.time) hasError = true;
+    if (!form.date || !form.time) hasError = true;
 
     if (hasError) return;
 
     setLoading(true);
 
     try {
-      setOverlayMessage("Checking availability...");
-
       const data = await scheduleVisit({
         user_name: name,
         user_email: email,
@@ -166,27 +158,23 @@ function Booking({ property, setActiveSection }) {
         location: property?.location,
       });
 
-      setOverlayMessage("Confirming visit...");
-      await new Promise((res) => setTimeout(res, 500));
-
-      setOverlayMessage("Finalizing...");
-      await new Promise((res) => setTimeout(res, 500));
-
       if (data?.status === "success") {
-        setSuccess(true);
-
         const parsed = data?.data || data?.[0]?.data;
+
+        setSuccess(true);
         setApiData(parsed);
 
-        setShowAnimation(true);
+        setTimeout(() => {
+          resultRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 200);
 
         setTimeout(() => {
-          detailsRef.current?.scrollIntoView({ behavior: "smooth" });
-        }, 200);
-      } else {
-        console.error("Booking failed", data);
+          setShowParticle(true);
+        }, 500);
       }
-
     } catch (err) {
       console.error("API error:", err);
     } finally {
@@ -215,18 +203,15 @@ function Booking({ property, setActiveSection }) {
           placeholder="Full Name"
           value={name}
           onChange={(e) => {
-            const value = e.target.value;
-            setName(value);
-
-            if (value.trim().length === 0) {
-              setNameError("Enter your name");
-            } else if (value.trim().length < 3) {
-              setNameError("Minimum 3 characters required");
-            } else {
-              setNameError("");
-            }
+            const v = e.target.value;
+            setName(v);
+            setNameError(v.length < 3 ? "Minimum 3 characters required" : "");
           }}
-          className={nameError ? "error" : name ? "valid" : ""}
+          className={`
+            ${nameError ? "error" : ""}
+            ${name && !nameError ? "valid" : ""}
+            ${submitted && !name ? "error" : ""}
+          `}
         />
         {nameError && <span className="error-text">{nameError}</span>}
 
@@ -235,24 +220,18 @@ function Booking({ property, setActiveSection }) {
           placeholder="Email Address"
           value={email}
           onChange={(e) => {
-            const value = e.target.value;
-            setEmail(value);
-
-            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            if (!value) {
-              setEmailError("Enter email");
-            } else if (!regex.test(value)) {
-              setEmailError("Enter valid email");
-            } else {
-              setEmailError("");
-            }
+            const v = e.target.value;
+            setEmail(v);
+            setEmailError(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "Enter valid email" : "");
           }}
-          className={emailError ? "error" : email ? "valid" : ""}
+          className={`
+            ${emailError ? "error" : ""}
+            ${email && !emailError ? "valid" : ""}
+            ${submitted && !email ? "error" : ""}
+          `}
         />
         {emailError && <span className="error-text">{emailError}</span>}
 
-        {/* LOADER */}
         {loading && (
           <div className="form-overlay">
             <div className="overlay-content">
@@ -268,18 +247,15 @@ function Booking({ property, setActiveSection }) {
           value={phone}
           maxLength={10}
           onChange={(e) => {
-            const value = e.target.value.replace(/\D/g, "");
-            setPhone(value);
-
-            if (value.length === 0) {
-              setPhoneError("Enter phone number");
-            } else if (value.length < 10) {
-              setPhoneError("Enter valid phone number");
-            } else {
-              setPhoneError("");
-            }
+            const v = e.target.value.replace(/\D/g, "");
+            setPhone(v);
+            setPhoneError(v.length < 10 ? "Enter valid phone number" : "");
           }}
-          className={phoneError ? "error" : phone ? "valid" : ""}
+          className={`
+            ${phoneError ? "error" : ""}
+            ${phone && !phoneError ? "valid" : ""}
+            ${submitted && !phone ? "error" : ""}
+          `}
         />
         {phoneError && <span className="error-text">{phoneError}</span>}
 
@@ -288,7 +264,11 @@ function Booking({ property, setActiveSection }) {
           {/* DATE */}
           <div className={`date-dropdown ${openDate ? "open" : ""}`} ref={dateRef}>
             <div
-              className={`date-selected ${form.date ? "valid" : ""}`}
+              className={`
+                date-selected
+                ${form.date ? "valid" : ""}
+                ${submitted && !form.date ? "error" : ""}
+              `}
               onClick={() => setOpenDate(!openDate)}
             >
               {form.date || "Select Date"}
@@ -297,7 +277,10 @@ function Booking({ property, setActiveSection }) {
             {openDate && (
               <div className="calendar">
                 <div className="calendar-header">
-                  {today.toLocaleString("default", { month: "long" })} {today.getFullYear()}
+                  {new Date().toLocaleString("default", {
+                    month: "long",
+                    year: "numeric",
+                  })}
                 </div>
 
                 <div className="calendar-weekdays">
@@ -308,7 +291,9 @@ function Booking({ property, setActiveSection }) {
                   {calendarDays.map((day) => (
                     <div
                       key={day.value}
-                      className={`calendar-day ${form.date === day.value ? "active" : ""} ${day.disabled ? "disabled" : ""}`}
+                      className={`calendar-day 
+                        ${day.disabled ? "disabled" : ""} 
+                        ${form.date === day.value ? "active" : ""}`}
                       onClick={() => {
                         if (day.disabled) return;
                         setForm({ ...form, date: day.value });
@@ -326,7 +311,11 @@ function Booking({ property, setActiveSection }) {
           {/* TIME */}
           <div className={`time-dropdown ${openTime ? "open" : ""}`} ref={dropdownRef}>
             <div
-              className={`time-selected ${form.time ? "valid" : ""}`}
+              className={`
+                time-selected
+                ${form.time ? "valid" : ""}
+                ${submitted && !form.time ? "error" : ""}
+              `}
               onClick={() => setOpenTime(!openTime)}
             >
               {form.time || "Select Time"}
@@ -353,83 +342,43 @@ function Booking({ property, setActiveSection }) {
         </div>
       </div>
 
-      <button
-        className={`book-btn ${name.trim().length < 3 ||
-          !email ||
-          phone.length !== 10 ||
-          !form.date ||
-          !form.time
-          ? "disabled-btn"
-          : ""}`}
-        onClick={handleConfirm}
-      >
+      <button className="book-btn" onClick={handleConfirm}>
         Confirm Booking
       </button>
 
-      {success && (
-        <div className="success-toast center">
-          ✅ Visit Scheduled Successfully
-        </div>
-      )}
-      {/* 🔥 FLOW START */}
-      <div ref={detailsRef}></div>
+      <div ref={resultRef} className="result-section">
 
-      {showAnimation && (
-        <div className="paper-animation">
-          <div className="paper">
-            <div className="particles"></div>
+        {success && (
+          <div className="success-toast center">
+            ✅ Visit Scheduled Successfully
           </div>
+        )}
+
+        <div className="result-content">
+
+          {showParticle && (
+            <ParticleAnimation onComplete={handleAnimationComplete} />
+          )}
+
+          <Suspense fallback={null}>
+            {showDetails && apiData && (
+              <div className="booking-details-smooth">
+                <BookingDetails apiData={apiData} timer={timer} />
+              </div>
+            )}
+          </Suspense>
+
+          {finalMessage && (
+            <div className="booking-details-smooth">
+              <div className="success-toast white-border" style={{ color: "#fff" }}>
+                📩 Check your email for confirmation
+              </div>
+            </div>
+          )}
+
         </div>
-      )}
+      </div>
 
-      {showDetails && apiData && (
-        <div className="booking-details-page">
-
-          <div className="timer">{timer}s</div>
-
-          <div className="details-card">
-
-            <h2>Booking Confirmed</h2>
-
-            <p className="confirmation-msg">
-              {apiData.confirmation_message}
-            </p>
-
-            <div className="detail-row">
-              <span>Booking ID</span>
-              <strong>{apiData.booking_id}</strong>
-            </div>
-
-            <div className="detail-row">
-              <span>Property</span>
-              <strong>{apiData.visit_details.property_name}</strong>
-            </div>
-
-            <div className="detail-row">
-              <span>Location</span>
-              <strong>{apiData.visit_details.location}</strong>
-            </div>
-
-            <div className="detail-row">
-              <span>Date</span>
-              <strong>{apiData.visit_details.date}</strong>
-            </div>
-
-            <div className="detail-row">
-              <span>Time</span>
-              <strong>{apiData.visit_details.time}</strong>
-            </div>
-
-          </div>
-        </div>
-      )}
-
-      {finalMessage && (
-        <div className="final-message">
-          📩 Check your email for confirmation
-        </div>
-      )}
-      {/* 🔥 FLOW END */}
     </div>
   );
 }

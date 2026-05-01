@@ -1,3 +1,6 @@
+/* =========================
+   LAYOUT
+========================= */
 .section-container {
   width: 100%;
   max-width: 720px;
@@ -6,15 +9,15 @@
   color: white;
 }
 
-/* 🔥 PROPERTY CARD */
+/* =========================
+   PROPERTY CARD
+========================= */
 .booking-property {
   display: flex;
   align-items: center;
   gap: 20px;
-
   padding: 18px;
   margin-bottom: 25px;
-
   border-radius: 20px;
   position: relative;
   overflow: hidden;
@@ -30,19 +33,13 @@
   transform: scale(1.08);
 }
 
-/* GRADIENT GLOW */
 .booking-property::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 20px;
   padding: 1px;
-
-  background: linear-gradient(120deg,
-      transparent 20%,
-      rgba(34, 197, 94, 0.4),
-      transparent 90%);
-
+  background: linear-gradient(120deg, transparent 20%, rgba(34, 197, 94, 0.4), transparent 90%);
   opacity: 0;
   transition: opacity 0.4s ease;
 }
@@ -53,9 +50,7 @@
 
 .booking-property:hover {
   border: 1px solid rgba(34, 197, 94, 0.5);
-  box-shadow:
-    0 0 25px rgba(34, 197, 94, 0.15),
-    0 15px 40px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 25px rgba(34, 197, 94, 0.15), 0 15px 40px rgba(0, 0, 0, 0.7);
 }
 
 /* IMAGE */
@@ -64,14 +59,12 @@
   height: 110px;
   border-radius: 14px;
   overflow: hidden;
-  position: relative;
 }
 
 .img-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-
   transition: transform 0.4s ease;
 }
 
@@ -91,19 +84,22 @@
   font-weight: 600;
 }
 
-/* FORM */
+/* =========================
+   FORM
+========================= */
 .booking-form {
   padding: 25px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  border-radius: 20px;
   position: relative;
   overflow: visible;
-  border-radius: 20px;
+
   backdrop-filter: blur(25px);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 10;
+
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
@@ -112,55 +108,45 @@
 .booking-form select {
   padding: 12px;
   border-radius: 10px;
-
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: white;
-
-  outline: none;
-
   transition: all 0.25s ease;
 }
 
-.booking-form input:focus,
-.booking-form select:focus {
-  border: 1px solid #ffffff;
+.booking-form input:focus {
+  border: 1px solid #fff;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
-  transform: translateY(-1px);
 }
 
-.booking-form input.valid,
-.booking-form select.valid {
-  border: 1px solid rgba(34, 197, 94, 0.7);
+.valid {
+  border: 1px solid rgba(34, 197, 94, 0.7) !important;
 }
 
-.booking-form input.error,
-.booking-form select.error {
-  border: 1px solid #ef4444;
+.error {
+  border: 1px solid #ef4444 !important;
 }
 
-/* ERROR TEXT */
 .error-text {
   font-size: 12px;
   color: #ef4444;
 }
 
-/* ROW */
 .row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 12px;
 }
 
 .row>div {
-  width: 100%;
+  flex: 1;
 }
 
-/* BUTTON */
+/* =========================
+   BUTTON
+========================= */
 .book-btn {
   margin-top: 20px;
   padding: 12px 20px;
-
   border-radius: 25px;
   border: none;
 
@@ -168,106 +154,42 @@
   color: white;
 
   cursor: pointer;
-  position: relative;
   overflow: hidden;
 
   transition: all 0.3s ease;
-
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.08);
-}
-
-.book-btn::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-
-  background: linear-gradient(120deg,
-      transparent,
-      rgba(34, 197, 94, 0.4),
-      transparent);
-
-  transition: 0.5s;
-}
-
-.book-btn:hover::before {
-  left: 100%;
 }
 
 .book-btn:hover {
   transform: translateY(-2px);
-  box-shadow:
-    0 10px 35px rgba(0, 0, 0, 0.6),
-    0 0 25px rgba(34, 197, 94, 0.15);
 }
 
-.book-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  box-shadow: none;
+/* =========================
+   LOADER + OVERLAY
+========================= */
+.form-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+
+  backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.5);
 }
 
-/* SUCCESS */
-.success {
-  text-align: center;
-  color: #22c55e;
-}
-
-/* TOAST */
-.toast {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  padding: 14px 22px;
-  border-radius: 20px;
-
+.overlay-content {
+  padding: 25px 30px;
+  border-radius: 16px;
   backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(34, 197, 94, 0.4);
-
-  color: #22c55e;
-
-  box-shadow:
-    0 0 20px rgba(34, 197, 94, 0.2),
-    0 10px 30px rgba(0, 0, 0, 0.6);
-
-  animation: toastIn 0.4s ease;
+  background: rgba(20, 20, 20, 0.7);
 }
 
-@keyframes toastIn {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-/* LOADING */
-.loading-box {
-  margin-top: 20px;
-  text-align: center;
-  color: #aaa;
-}
-
-/* 🔥 FINANCE STYLE LOADER */
 .loader {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-
   border: 3px solid rgba(255, 255, 255, 0.15);
   border-top: 3px solid #22c55e;
-
   animation: spin 1s linear infinite;
-  margin-bottom: 12px;
 }
 
 @keyframes spin {
@@ -276,238 +198,72 @@
   }
 }
 
-/* INLINE GLASS SUCCESS (REPLACES TOAST) */
-.success-toast {
-  margin-top: 20px;
-  padding: 16px;
-
-  text-align: center;
-  font-weight: 500;
-  color: #22c55e;
-
-  border-radius: 20px;
-
-  backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(34, 197, 94, 0.4);
-
-  box-shadow:
-    0 0 20px rgba(34, 197, 94, 0.15),
-    0 10px 30px rgba(0, 0, 0, 0.6);
-
-  animation: toastIn 0.4s ease;
-}
-
-/* 🔥 ADD THIS AT END ONLY */
-
-/* MAKE FORM RELATIVE */
-.booking-form {
-  position: relative;
-}
-
-/* OVERLAY */
-/* 🔥 OVERLAY (keep background subtle) */
-.form-overlay {
-  position: absolute;
-  inset: 0;
-  border-radius: 20px;
-
-  display: grid;
-  place-items: center;
-
-  backdrop-filter: blur(12px);
-  /* lighter blur */
-  background: rgba(0, 0, 0, 0.5);
-
-  z-index: 20;
-}
-
-/* 🔥 CENTER FLOATING CARD */
-.overlay-content {
-  padding: 25px 30px;
-  border-radius: 16px;
-
-  backdrop-filter: blur(20px);
-  background: rgba(20, 20, 20, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  box-shadow:
-    0 0 20px rgba(0, 0, 0, 0.6),
-    0 10px 40px rgba(0, 0, 0, 0.8);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  transform: translateY(-10px);
-  /* slight upward like finance */
-}
-
-
-/* TEXT */
-.overlay-text {
-  color: #d1d5db;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-}
-
-/* CLEAN FADE (no side movement) */
-@keyframes overlayFade {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-/* DATE ICON */
-.input-icon {
-  position: relative;
-}
-
-/* FIX DATE DARK MODE */
-.booking-form input[type="date"] {
-  appearance: none;
-  width: 100%;
-  -webkit-appearance: none;
-}
-
-.booking-form input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  opacity: 0.7;
-  cursor: pointer;
-}
-
-/* TIME DROPDOWN */
+/* =========================
+   DATE + TIME INPUTS
+========================= */
+.date-dropdown,
 .time-dropdown {
   position: relative;
-}
-
-.time-selected {
-  width: 100%;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  cursor: pointer;
-}
-
-.time-selected.valid {
-  border: 1px solid rgba(34, 197, 94, 0.7);
-}
-
-/* GLASS MENU */
-.time-menu {
-  position: absolute;
-  top: 110%;
-  left: 0;
-  width: 100%;
-
-  max-height: 120px;
-  overflow-y: auto;
-
-  border-radius: 12px;
-  backdrop-filter: blur(20px);
-  background: rgba(20, 20, 20, 0.9);
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  z-index: 9999;
-  /* 🔥 increase */
-}
-
-.time-menu div {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.time-menu div:hover {
-  background: rgba(34, 197, 94, 0.2);
-}
-
-/* ---------- CALENDAR ---------- */
-.date-dropdown {
-  position: relative;
-}
-
-.date-selected {
-  width: 100%;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  padding: 12px;
-
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  cursor: pointer;
-}
-
-.date-selected.valid {
-  border: 1px solid rgba(34, 197, 94, 0.7);
+  flex: 1;
 }
 
 .date-selected,
 .time-selected {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+
+  font-size: 14px;
+  box-sizing: border-box;
+
   color: #9ca3af;
-  /* same muted as placeholders */
 }
 
 .date-selected.valid,
 .time-selected.valid {
+  border: 1px solid rgba(34, 197, 94, 0.7);
   color: #fff;
-  /* when selected */
+}
+
+.date-selected.error,
+.time-selected.error {
+  border: 1px solid #ef4444;
 }
 
 .date-dropdown.open .date-selected,
 .time-dropdown.open .time-selected {
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
+/* =========================
+   CALENDAR (FIXED)
+========================= */
 .calendar {
   position: absolute;
-
-  bottom: 110%;
-  left: 28px;
-
-  width: 250px;
-  /* 🔥 smaller */
-  padding: 10px;
-
-  border-radius: 16px;
-
-  backdrop-filter: blur(35px);
-  /* 🔥 balanced blur */
-  background: rgba(10, 10, 10, 0.96);
-  /* 🔥 stronger opacity */
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.9),
-    0 0 30px rgba(0, 0, 0, 0.6);
-
+  left: 0;
+  width: 220px;              /* 🔥 SMALL LIKE BEFORE */
+  bottom:10%;
   z-index: 9999;
 
-  animation: calendarSlideUp 0.25s ease;
-}
+  padding: 10px;
+  border-radius: 14px;
 
-@keyframes calendarSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  backdrop-filter: blur(20px);
+  background: rgba(20, 20, 20, 0.95);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,0.9),
+    0 0 20px rgba(255,255,255,0.05);
+
+  animation: calendarSlideUp 0.25s ease;
 }
 
 .calendar-header {
@@ -517,250 +273,98 @@
   color: #d1d5db;
 }
 
-/* WEEKDAYS */
 .calendar-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   font-size: 11px;
   color: #9ca3af;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
-.calendar-weekdays span {
-  text-align: center;
-}
-
-/* DAYS */
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+  gap: 6px;
 }
 
 .calendar-day {
-  padding: 6px;
+  height: 28px;
   font-size: 13px;
-  text-align: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border-radius: 8px;
-
-  background: rgba(255, 255, 255, 0.05);
   cursor: pointer;
-}
 
-.calendar-day:hover {
-  background: rgba(34, 197, 94, 0.25);
+  background: rgba(255,255,255,0.05);
 }
 
 .calendar-day.active {
   background: rgba(34, 197, 94, 0.6);
 }
 
-/* ---------- TIME ---------- */
-/* TIME */
-.time-dropdown {
-  position: relative;
+.calendar-day:hover {
+  background: rgba(34,197,94,0.25);
+  transform: scale(1.05);
 }
 
-.time-selected {
-  height: 44px;
-  display: flex;
-  align-items: center;
-  padding: 10px;
-
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  cursor: pointer;
+.calendar-day.disabled {
+  opacity: 0.3;
+  pointer-events: none;
 }
 
-.time-dropdown.open .time-selected {
-  border: 1px solid #fff;
-}
-
-/* MENU */
+/* =========================
+   TIME DROPDOWN
+========================= */
 .time-menu {
   position: absolute;
-  top: 110%;
+  top: calc(100% + 8px);
   width: 100%;
-
-  max-height: 125px;
+  max-height: 120px;
   overflow-y: auto;
 
-  backdrop-filter: blur(20px);
-  background: rgba(15, 15, 15, 0.95);
   border-radius: 12px;
-
-  z-index: 9999;
-
-  scroll-snap-type: y mandatory;
-  overscroll-behavior: contain;
-  scroll-behavior: smooth;
+  backdrop-filter: blur(20px);
+  background: rgba(20, 20, 20, 0.9);
 }
 
 .time-item {
-  scroll-snap-align: start;
+  padding: 10px;
+  cursor: pointer;
 }
 
 .time-item:hover {
   background: rgba(34, 197, 94, 0.2);
 }
 
-.time-item.default {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-/* ---------- ANIMATION ---------- */
-@keyframes dropdownFade {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ---------- FIX SUCCESS POSITION ---------- */
-.success-toast.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  animation: fadeCenter 0.4s ease;
-}
-
-@keyframes fadeCenter {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* DISABLED DATES */
-.calendar-day.disabled {
-  opacity: 0.25;
-  pointer-events: none;
-  filter: grayscale(0.6);
-}
-
-/* SLIGHT TODAY EMPHASIS (optional but clean) */
-.calendar-day:first-child:not(.disabled) {
-  border: 1px solid rgba(34, 197, 94, 0.4);
-}
-
-/* 🔥 MATCH DATE + TIME FIELD HEIGHT PERFECTLY */
-.date-selected,
-.time-selected {
-  height: 44px;
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  /* keep ONLY horizontal padding */
-  font-size: 14px;
-  box-sizing: border-box;
-  /* 🔥 FIX: ensures identical sizing */
-}
-
-/* 🔥 ENSURE CONSISTENT BOX MODEL */
-.date-dropdown,
-.time-dropdown {
-  display: flex;
-  align-items: center;
-}
-
-/* 🔥 REMOVE ANY EXTRA INTERNAL HEIGHT PUSH */
-.date-selected span,
-.time-selected span {
-  line-height: 1;
-}
-
-.disabled-btn {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.success-fixed {
-  position: fixed;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 10px 20px;
-  border-radius: 20px;
-  background: rgba(34,197,94,0.15);
-  border: 1px solid rgba(34,197,94,0.4);
-  backdrop-filter: blur(20px);
-  z-index: 999;
-}
-
-/* ANIMATION */
-.paper-animation {
-  height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.paper {
-  width: 220px;
-  height: 280px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.08);
-  position: relative;
-  overflow: hidden;
-}
-
-.particles::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(#444 2px, transparent 2px);
-  background-size: 20px 20px;
-  animation: fall 5s linear forwards;
-}
-
-@keyframes fall {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(0); }
-}
-
-/* DETAILS */
-.booking-details-page {
-  padding: 40px 20px;
-}
-
-.details-card {
-  max-width: 520px;
-  margin: auto;
-  padding: 30px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(30px);
-  border: 1px solid rgba(255,255,255,0.2);
-  box-shadow: 0 0 40px rgba(255,255,255,0.1);
-}
-
-.detail-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.confirmation-msg {
-  margin-bottom: 20px;
-  color: #e5e5e5;
-}
-
-.timer {
-  position: fixed;
-  right: 20px;
-  top: 120px;
-  color: #22c55e;
-}
-
-.final-message {
+/* =========================
+   SUCCESS + RESULT
+========================= */
+.success-toast {
+  margin-top: 20px;
+  padding: 16px;
   text-align: center;
+  color: #22c55e;
+
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.result-section {
+  min-height: 100vh;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result-content {
   margin-top: 40px;
-  color: #aaa;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
