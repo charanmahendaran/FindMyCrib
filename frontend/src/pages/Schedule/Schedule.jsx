@@ -141,13 +141,18 @@ function Booking({ property, setActiveSection }) {
   }, [showDetails]);
 
   const handleAnimationComplete = () => {
-    // start dissolve phase
+    // 1) stop loader
     setShowParticle(false);
 
-    // delay card slightly so overlap happens
+    // 2) let the shell expand first (empty for a moment)
+    setTimeout(() => {
+      setShowDetails("expanding"); // drives CSS expansion only
+    }, 60);
+
+    // 3) after expansion, reveal the card
     setTimeout(() => {
       setShowDetails(true);
-    }, 120); // 👈 key for smooth morph
+    }, 420); // match CSS duration (~0.6s feels good at 420–500ms)
   };
 
   if (!property) {
@@ -433,7 +438,10 @@ function Booking({ property, setActiveSection }) {
 
         <div className="result-content">
 
-          <div className={`transition-shell ${showDetails ? "expanded" : ""} ${!showParticle && !showDetails ? "dissolving" : ""}`}>
+          <div
+            className={`transition-shell ${showDetails === "expanding" || showDetails === true ? "expanded" : ""
+              }`}
+          >
 
             {/* LOADER */}
             {showParticle && !showDetails && (
@@ -443,7 +451,7 @@ function Booking({ property, setActiveSection }) {
             {/* BOOKING CARD INSIDE SAME SHELL */}
             <Suspense fallback={null}>
               {showDetails && apiData && (
-                <div className={`booking-details-smooth ${showDetails === "exit" ? "exit" : ""}`}>
+                <div className={`booking-details-smooth-enter ${showDetails === "exit" ? "exit" : ""}`}>
                   <BookingDetails apiData={apiData} timer={timer} />
                 </div>
               )}

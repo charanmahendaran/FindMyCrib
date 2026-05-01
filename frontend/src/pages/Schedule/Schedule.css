@@ -588,10 +588,12 @@
 
   margin: 40px auto;
 
-  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  /* smoother, “liquid” curve */
+  transition:
+    width 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* EXPANDS INTO CARD */
 .transition-shell.expanded {
   width: 100%;
   max-width: 520px;
@@ -628,27 +630,27 @@
   }
 }
 
-/* CARD ENTER (emerges from same spot) */
-.booking-details-smooth {
-  animation: liquidIn 0.45s ease forwards;
+/* card only appears AFTER shell expansion */
+.booking-details-smooth.enter {
+  animation: cardEnterSmooth 0.45s ease forwards;
 }
 
-@keyframes liquidIn {
+@keyframes cardEnterSmooth {
   0% {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.96) translateY(14px);
     filter: blur(6px);
   }
 
   60% {
     opacity: 0.7;
-    transform: scale(1.02);
+    transform: scale(1.02) translateY(4px);
     filter: blur(2px);
   }
 
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
     filter: blur(0);
   }
 }
