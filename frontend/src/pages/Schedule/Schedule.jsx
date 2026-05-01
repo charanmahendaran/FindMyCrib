@@ -4,6 +4,12 @@ import { getPropertyImage } from "../../utils/imageMapper";
 import { scheduleVisit } from "../../services/agent5";
 
 function Booking({ property, setActiveSection }) {
+  const [apiData, setApiData] = useState(null);
+  const [showAnimation, setShowAnimation] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
+  const [timer, setTimer] = useState(10);
+  const [finalMessage, setFinalMessage] = useState(false);
+  const detailsRef = useRef(null);
   const [openTime, setOpenTime] = useState(false);
   const [openDate, setOpenDate] = useState(false);
   const [name, setName] = useState("");
@@ -73,6 +79,39 @@ function Booking({ property, setActiveSection }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  useEffect(() => {
+    if (!showAnimation) return;
+
+    const t = setTimeout(() => {
+      setShowAnimation(false);
+      setShowDetails(true);
+    }, 5000);
+
+    return () => clearTimeout(t);
+  }, [showAnimation]);
+
+  useEffect(() => {
+    if (!showDetails) return;
+
+    let t = 10;
+    setTimer(t);
+
+    const interval = setInterval(() => {
+      t--;
+      setTimer(t);
+
+      if (t === 0) {
+        clearInterval(interval);
+        setShowDetails(false);
+        setFinalMessage(true);
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [showDetails]);
+
   if (!property) {
     return (
       <div className="empty-state">
@@ -135,6 +174,15 @@ function Booking({ property, setActiveSection }) {
 
       if (data?.status === "success") {
         setSuccess(true);
+
+        const parsed = data?.data || data?.[0]?.data;
+        setApiData(parsed);
+
+        setShowAnimation(true);
+
+        setTimeout(() => {
+          detailsRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, 200);
       } else {
         console.error("Booking failed", data);
       }
@@ -323,7 +371,65 @@ function Booking({ property, setActiveSection }) {
           ✅ Visit Scheduled Successfully
         </div>
       )}
+      {/* 🔥 FLOW START */}
+      <div ref={detailsRef}></div>
 
+      {showAnimation && (
+        <div className="paper-animation">
+          <div className="paper">
+            <div className="particles"></div>
+          </div>
+        </div>
+      )}
+
+      {showDetails && apiData && (
+        <div className="booking-details-page">
+
+          <div className="timer">{timer}s</div>
+
+          <div className="details-card">
+
+            <h2>Booking Confirmed</h2>
+
+            <p className="confirmation-msg">
+              {apiData.confirmation_message}
+            </p>
+
+            <div className="detail-row">
+              <span>Booking ID</span>
+              <strong>{apiData.booking_id}</strong>
+            </div>
+
+            <div className="detail-row">
+              <span>Property</span>
+              <strong>{apiData.visit_details.property_name}</strong>
+            </div>
+
+            <div className="detail-row">
+              <span>Location</span>
+              <strong>{apiData.visit_details.location}</strong>
+            </div>
+
+            <div className="detail-row">
+              <span>Date</span>
+              <strong>{apiData.visit_details.date}</strong>
+            </div>
+
+            <div className="detail-row">
+              <span>Time</span>
+              <strong>{apiData.visit_details.time}</strong>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {finalMessage && (
+        <div className="final-message">
+          📩 Check your email for confirmation
+        </div>
+      )}
+      {/* 🔥 FLOW END */}
     </div>
   );
 }
