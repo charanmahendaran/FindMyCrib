@@ -79,7 +79,7 @@ function Booking({ property, setActiveSection }) {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
-  
+
   useEffect(() => {
     if (finalMessage) {
       setTimeout(() => {
@@ -125,8 +125,15 @@ function Booking({ property, setActiveSection }) {
 
       if (t === 0) {
         clearInterval(interval);
-        setShowDetails(false);
-        setFinalMessage(true);
+
+        // trigger exit animation first
+        setShowDetails("exit");
+
+        // wait for exit animation before switching
+        setTimeout(() => {
+          setShowDetails(false);
+          setFinalMessage(true);
+        }, 300); // 👈 matches CSS animation
       }
     }, 1000);
 
@@ -158,6 +165,33 @@ function Booking({ property, setActiveSection }) {
   }
 
   const image = getPropertyImage(property);
+  const smoothScrollTo = (targetY) => {
+    const start = window.scrollY;
+    const distance = targetY - start;
+
+    const duration = 1800; // 🔥 same feel as scroll up
+    let startTime = null;
+
+    const easeInOutCubic = (t) =>
+      t < 0.5
+        ? 4 * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    const animate = (currentTime) => {
+      if (!startTime) startTime = currentTime;
+
+      const progress = (currentTime - startTime) / duration;
+      const eased = easeInOutCubic(Math.min(progress, 1));
+
+      window.scrollTo(0, start + distance * eased);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  };
 
   const handleConfirm = async () => {
     setSubmitted(true);
@@ -202,12 +236,7 @@ function Booking({ property, setActiveSection }) {
         setSuccess(true);
         setApiData(parsed);
 
-        setTimeout(() => {
-          window.scrollTo({
-            top: resultRef.current.offsetTop - 80,
-            behavior: "smooth",
-          });
-        }, 300);
+        smoothScrollTo(resultRef.current.offsetTop - 15);
 
         setTimeout(() => {
           setShowParticle(true);
@@ -414,7 +443,7 @@ function Booking({ property, setActiveSection }) {
             {/* BOOKING CARD INSIDE SAME SHELL */}
             <Suspense fallback={null}>
               {showDetails && apiData && (
-                <div className="booking-details-smooth">
+                <div className={`booking-details-smooth ${showDetails === "exit" ? "exit" : ""}`}>
                   <BookingDetails apiData={apiData} timer={timer} />
                 </div>
               )}
