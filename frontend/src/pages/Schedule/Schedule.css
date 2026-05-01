@@ -1,49 +1,95 @@
+/* CONTAINER */
 .section-container {
   width: 100%;
-  max-width: 700px;
+  max-width: 720px;
   margin: 0 auto;
-  padding: 30px 20px;
-
-  color: white; /* 🔥 GLOBAL FIX */
-}
-
-/* PROPERTY */
-.booking-property {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-
-  padding: 15px;
-  margin-bottom: 20px;
-}
-
-.booking-property img {
-  width: 140px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-/* TEXT FIX */
-.booking-property h3 {
+  padding: 40px 20px;
   color: white;
 }
 
-.booking-property p {
-  color: #cfcfcf;
+/* ========================= */
+/* 🔥 PROPERTY CARD */
+/* ========================= */
+
+.booking-property {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  padding: 18px;
+  margin-bottom: 25px;
+
+  border-radius: 20px;
+
+  backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  transition: all 0.3s ease;
+}
+
+/* 💚 GREEN HOVER (FINANCE STYLE) */
+.booking-property:hover {
+  border: 1px solid rgba(34,197,94,0.5);
+  box-shadow:
+    0 0 20px rgba(34,197,94,0.15),
+    0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* IMAGE */
+.img-wrapper {
+  width: 160px;
+  height: 110px;
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* TEXT */
+.property-info h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.property-info p {
+  color: #bfbfbf;
+  margin-top: 4px;
 }
 
 .price {
+  margin-top: 6px;
   color: #22c55e;
   font-weight: 600;
 }
 
-/* FORM */
+/* ========================= */
+/* 🔥 FORM */
+/* ========================= */
+
 .booking-form {
-  padding: 20px;
+  padding: 25px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
+
+  border-radius: 20px;
+
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  transition: all 0.3s ease;
+}
+
+/* 💚 subtle hover like finance */
+.booking-form:hover {
+  border: 1px solid rgba(34,197,94,0.4);
 }
 
 /* INPUT */
@@ -51,41 +97,69 @@
   padding: 12px;
   border-radius: 10px;
 
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.6);
   border: 1px solid rgba(255,255,255,0.15);
   color: white;
 
   outline: none;
+  transition: all 0.25s ease;
 }
 
-/* 🔥 DATE + TIME FIX */
+/* ✨ CLICK → WHITE */
+.booking-form input:focus {
+  border: 1px solid #ffffff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.15);
+}
+
+/* 💚 AFTER CLICK → GREEN */
+.booking-form input:not(:focus):not(:placeholder-shown) {
+  border: 1px solid rgba(34,197,94,0.6);
+}
+
+/* DATE + TIME FIX */
 .booking-form input[type="date"],
 .booking-form input[type="time"] {
-  color-scheme: dark; /* 🔥 FIX ICON VISIBILITY */
+  color-scheme: dark;
 }
 
 /* ROW */
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
 }
 
-/* BUTTON */
+/* ========================= */
+/* 🔥 BUTTON */
+/* ========================= */
+
 .book-btn {
-  margin-top: 20px;
-  padding: 12px;
-  border-radius: 20px;
+  margin-top: 25px;
+  padding: 14px;
+
+  border-radius: 25px;
   border: none;
 
-  background: var(--button-gradient);
+  background: linear-gradient(135deg, #1f2937, #111827);
   color: white;
 
   cursor: pointer;
+  transition: all 0.3s ease;
+
+  box-shadow: 0 0 20px rgba(255,255,255,0.08);
 }
 
+.book-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* ========================= */
 /* SUCCESS */
+/* ========================= */
+
 .success {
   text-align: center;
   color: #22c55e;
+  font-weight: 500;
 }
