@@ -79,7 +79,16 @@ function Booking({ property, setActiveSection }) {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
-
+  useEffect(() => {
+    if (finalMessage) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }, 400);
+    }
+  }, [finalMessage]);
   useEffect(() => {
     if (!showDetails) return;
 
@@ -165,11 +174,11 @@ function Booking({ property, setActiveSection }) {
         setApiData(parsed);
 
         setTimeout(() => {
-          resultRef.current?.scrollIntoView({
+          window.scrollTo({
+            top: resultRef.current.offsetTop - 80,
             behavior: "smooth",
-            block: "start",
           });
-        }, 200);
+        }, 300);
 
         setTimeout(() => {
           setShowParticle(true);
@@ -348,17 +357,29 @@ function Booking({ property, setActiveSection }) {
 
       <div ref={resultRef} className="result-section">
 
-        {success && (
-          <div className="success-toast center">
-            ✅ Visit Scheduled Successfully
-          </div>
-        )}
+        <div className="top-stack">
+
+          {success && (
+            <div className="success-toast">
+              ✅ Visit Scheduled Successfully
+            </div>
+          )}
+
+          {finalMessage && (
+            <div className="success-toast white-border">
+              📩 Check your email for confirmation
+            </div>
+          )}
+
+        </div>
 
         <div className="result-content">
 
-          {showParticle && (
-            <ParticleAnimation onComplete={handleAnimationComplete} />
-          )}
+          <div className={`transition-shell ${showDetails ? "expanded" : ""}`}>
+            {showParticle && !showDetails && (
+              <ParticleAnimation onComplete={handleAnimationComplete} />
+            )}
+          </div>
 
           <Suspense fallback={null}>
             {showDetails && apiData && (
@@ -367,15 +388,6 @@ function Booking({ property, setActiveSection }) {
               </div>
             )}
           </Suspense>
-
-          {finalMessage && (
-            <div className="booking-details-smooth">
-              <div className="success-toast white-border" style={{ color: "#fff" }}>
-                📩 Check your email for confirmation
-              </div>
-            </div>
-          )}
-
         </div>
       </div>
 

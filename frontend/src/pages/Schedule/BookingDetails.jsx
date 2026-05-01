@@ -2,8 +2,6 @@ function BookingDetails({ apiData, timer }) {
   return (
     <div className="booking-details-page">
 
-      <div className="timer">{timer}s</div>
-
       <div className="details-card">
 
         <h2>Booking Confirmed</h2>
@@ -35,6 +33,11 @@ function BookingDetails({ apiData, timer }) {
         <div className="detail-row">
           <span>Time</span>
           <strong>{apiData.visit_details.time}</strong>
+        </div>
+
+        {/* 🔥 TIMER INSIDE CARD */}
+        <div className="auto-close-box">
+          ⏳ This will auto close in <strong>{timer}s</strong>
         </div>
 
       </div>
