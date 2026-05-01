@@ -1,6 +1,6 @@
 // src/services/agent5.js
 
-const USE_MOCK = true; // 🔁 switch like other agents
+const USE_MOCK = true;// Set to false to fetch from API, true to use mock data
 
 const WEBHOOK_URL =
   "https://learnersbyte1.app.n8n.cloud/webhook-test/schedule-visit";
@@ -9,19 +9,29 @@ const WEBHOOK_URL =
 const CACHE_PREFIX = "booking_cache_";
 const inFlightRequests = new Map();
 
-// 🧪 MOCK RESPONSE
+// 🧪 MOCK RESPONSE (MATCHES YOUR N8N FORMAT)
 const mockResponse = {
   status: "success",
-  message: "Visit scheduled successfully",
-  slot: "confirmed",
+  source: "mock",
+  data: {
+    booking_id: "VISIT-MOCK1234",
+    visit_details: {
+      property_name: "Prestige Lakeside Habitat",
+      location: "Whitefield",
+      date: "2026-05-11",
+      time: "4:00 PM",
+    },
+    created_at: new Date().toISOString(),
+    confirmation_message:
+      "Hi Krishna, your visit to Prestige Lakeside Habitat in Whitefield is confirmed on 2026-05-11 at 4:00 PM.",
+  },
 };
 
-// 🔧 NORMALIZER
+// 🔧 NORMALIZER (🔥 KEEP FULL RESPONSE)
 function normalize(data) {
-  return {
-    status: data?.status || "error",
-    message: data?.message || "Something went wrong",
-    slot: data?.availability || "unknown",
+  return data || {
+    status: "error",
+    message: "Something went wrong",
   };
 }
 
@@ -38,7 +48,7 @@ export async function scheduleVisit(payload) {
   const cached = sessionStorage.getItem(cacheKey);
   if (cached) return JSON.parse(cached);
 
-  // 🚫 IN-FLIGHT
+  // 🚫 IN-FLIGHT REQUEST PREVENTION
   if (inFlightRequests.has(requestKey)) {
     return inFlightRequests.get(requestKey);
   }
@@ -64,13 +74,18 @@ export async function scheduleVisit(payload) {
       if (!res.ok) throw new Error("API failed");
 
       const data = await res.json();
+
       const normalized = normalize(data);
 
       sessionStorage.setItem(cacheKey, JSON.stringify(normalized));
+
       return normalized;
     } catch (err) {
       console.error("Agent5 error:", err);
-      return normalize({});
+      return normalize({
+        status: "error",
+        message: "Failed to schedule visit",
+      });
     } finally {
       inFlightRequests.delete(requestKey);
     }

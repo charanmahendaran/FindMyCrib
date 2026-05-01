@@ -20,8 +20,8 @@
   overflow: hidden;
 
   backdrop-filter: blur(25px);
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
   transition: all 0.3s ease;
 }
@@ -34,12 +34,10 @@
   border-radius: 20px;
   padding: 1px;
 
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(34,197,94,0.4),
-    transparent
-  );
+  background: linear-gradient(120deg,
+      transparent,
+      rgba(34, 197, 94, 0.4),
+      transparent);
 
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -50,10 +48,10 @@
 }
 
 .booking-property:hover {
-  border: 1px solid rgba(34,197,94,0.5);
+  border: 1px solid rgba(34, 197, 94, 0.5);
   box-shadow:
-    0 0 25px rgba(34,197,94,0.15),
-    0 15px 40px rgba(0,0,0,0.7);
+    0 0 25px rgba(34, 197, 94, 0.15),
+    0 15px 40px rgba(0, 0, 0, 0.7);
 }
 
 /* IMAGE */
@@ -92,13 +90,14 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-
+  position: relative;
+  overflow: hidden;
   border-radius: 20px;
   backdrop-filter: blur(25px);
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
 /* INPUTS */
@@ -107,8 +106,8 @@
   padding: 12px;
   border-radius: 10px;
 
-  background: rgba(0,0,0,0.6);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: white;
 
   outline: none;
@@ -119,13 +118,13 @@
 .booking-form input:focus,
 .booking-form select:focus {
   border: 1px solid #ffffff;
-  box-shadow: 0 0 15px rgba(255,255,255,0.15);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
 
 .booking-form input.valid,
 .booking-form select.valid {
-  border: 1px solid rgba(34,197,94,0.7);
+  border: 1px solid rgba(34, 197, 94, 0.7);
 }
 
 .booking-form input.error,
@@ -163,7 +162,7 @@
 
   transition: all 0.3s ease;
 
-  box-shadow: 0 0 20px rgba(34,197,94,0.08);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.08);
 }
 
 .book-btn::before {
@@ -174,12 +173,10 @@
   width: 100%;
   height: 100%;
 
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(34,197,94,0.4),
-    transparent
-  );
+  background: linear-gradient(120deg,
+      transparent,
+      rgba(34, 197, 94, 0.4),
+      transparent);
 
   transition: 0.5s;
 }
@@ -191,8 +188,8 @@
 .book-btn:hover {
   transform: translateY(-2px);
   box-shadow:
-    0 10px 35px rgba(0,0,0,0.6),
-    0 0 25px rgba(34,197,94,0.15);
+    0 10px 35px rgba(0, 0, 0, 0.6),
+    0 0 25px rgba(34, 197, 94, 0.15);
 }
 
 .book-btn:disabled {
@@ -218,14 +215,14 @@
   border-radius: 20px;
 
   backdrop-filter: blur(20px);
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(34,197,94,0.4);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.4);
 
   color: #22c55e;
 
   box-shadow:
-    0 0 20px rgba(34,197,94,0.2),
-    0 10px 30px rgba(0,0,0,0.6);
+    0 0 20px rgba(34, 197, 94, 0.2),
+    0 10px 30px rgba(0, 0, 0, 0.6);
 
   animation: toastIn 0.4s ease;
 }
@@ -235,8 +232,120 @@
     opacity: 0;
     transform: translateX(-50%) translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* LOADING */
+.loading-box {
+  margin-top: 20px;
+  text-align: center;
+  color: #aaa;
+}
+
+/* 🔥 FINANCE STYLE LOADER */
+.loader {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  border: 3px solid rgba(255,255,255,0.15);
+  border-top: 3px solid #22c55e;
+
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* INLINE GLASS SUCCESS (REPLACES TOAST) */
+.success-toast {
+  margin-top: 20px;
+  padding: 16px;
+
+  text-align: center;
+  font-weight: 500;
+  color: #22c55e;
+
+  border-radius: 20px;
+
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+
+  box-shadow:
+    0 0 20px rgba(34, 197, 94, 0.15),
+    0 10px 30px rgba(0, 0, 0, 0.6);
+
+  animation: toastIn 0.4s ease;
+}
+
+/* 🔥 ADD THIS AT END ONLY */
+
+/* MAKE FORM RELATIVE */
+.booking-form {
+  position: relative;
+}
+
+/* OVERLAY */
+/* 🔥 OVERLAY (keep background subtle) */
+.form-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+
+  display: grid;
+  place-items: center;
+
+  backdrop-filter: blur(12px); /* lighter blur */
+  background: rgba(0, 0, 0, 0.5);
+
+  z-index: 20;
+}
+
+/* 🔥 CENTER FLOATING CARD */
+.overlay-content {
+  padding: 25px 30px;
+  border-radius: 16px;
+
+  backdrop-filter: blur(20px);
+  background: rgba(20, 20, 20, 0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 0 20px rgba(0,0,0,0.6),
+    0 10px 40px rgba(0,0,0,0.8);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  transform: translateY(-10px); /* slight upward like finance */
+}
+
+
+/* TEXT */
+.overlay-text {
+  color: #d1d5db;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* CLEAN FADE (no side movement) */
+@keyframes overlayFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }
