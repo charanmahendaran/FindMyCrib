@@ -152,7 +152,7 @@ function Booking({ property, setActiveSection }) {
     // 3) after expansion, reveal the card
     setTimeout(() => {
       setShowDetails(true);
-    }, 420); // match CSS duration (~0.6s feels good at 420–500ms)
+    }, 500); // match CSS duration (~0.6s feels good at 420–500ms)
   };
 
   if (!property) {
