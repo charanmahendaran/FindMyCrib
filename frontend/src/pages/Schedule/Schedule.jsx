@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./Schedule.css";
 import { getPropertyImage } from "../../utils/imageMapper";
+import { scheduleVisit } from "../../services/agent5";
 
 function Booking({ property, setActiveSection }) {
   const [openTime, setOpenTime] = useState(false);
@@ -13,6 +14,7 @@ function Booking({ property, setActiveSection }) {
   const dateRef = useRef(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [overlayMessage, setOverlayMessage] = useState("Checking availability...");
 
   const [form, setForm] = useState({
     date: "",
@@ -88,7 +90,7 @@ function Booking({ property, setActiveSection }) {
   }
 
   const image = getPropertyImage(property);
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     let hasError = false;
 
     if (name.trim().length < 3) {
@@ -108,11 +110,41 @@ function Booking({ property, setActiveSection }) {
 
     setLoading(true);
 
-    // simulate API (replace with your real API later)
-    setTimeout(() => {
+    try {
+      // 🔥 STEP 1
+      setOverlayMessage("Checking availability...");
+
+      const data = await scheduleVisit({
+        user_name: name,
+        phone,
+        date: form.date,
+        time: form.time,
+        property_name: property?.name,
+        location: property?.location,
+      });
+
+      // 🔥 STEP 2
+      setOverlayMessage("Confirming visit...");
+
+      // small delay for UX smoothness
+      await new Promise((res) => setTimeout(res, 500));
+
+      // 🔥 STEP 3
+      setOverlayMessage("Finalizing...");
+
+      await new Promise((res) => setTimeout(res, 500));
+
+      if (data?.status === "success") {
+        setSuccess(true);
+      } else {
+        console.error("Booking failed", data);
+      }
+
+    } catch (err) {
+      console.error("API error:", err);
+    } finally {
       setLoading(false);
-      setSuccess(true);
-    }, 2000);
+    }
   };
 
   return (
@@ -154,7 +186,7 @@ function Booking({ property, setActiveSection }) {
           <div className="form-overlay">
             <div className="overlay-content">
               <div className="loader"></div>
-              <p className="overlay-text">Confirming your visit...</p>
+              <p className="overlay-text">{overlayMessage}</p>
             </div>
           </div>
         )}
