@@ -368,3 +368,108 @@
   align-items: center;
   justify-content: center;
 }
+
+/* =========================
+   GLASS BOOKING CARD FINAL
+========================= */
+
+.booking-details-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* CARD */
+.details-card {
+  width: 100%;
+  max-width: 520px;
+
+  padding: 28px;
+  border-radius: 22px;
+
+  backdrop-filter: blur(35px);
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.02)
+  );
+
+  border: 1px solid rgba(255,255,255,0.12);
+
+  box-shadow:
+    0 0 30px rgba(255,255,255,0.05),
+    0 30px 80px rgba(0,0,0,0.9);
+
+  animation: cardFadeIn 0.45s ease;
+}
+
+/* TITLE */
+.details-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* MESSAGE */
+.confirmation-msg {
+  color: #d1d5db;
+  margin-bottom: 18px;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* GRID */
+.details-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ROW */
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 8px 0;
+
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.detail-row span {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.detail-row strong {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* TIMER */
+.auto-close-box {
+  margin-top: 18px;
+  padding: 12px;
+
+  border-radius: 14px;
+  text-align: center;
+
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+/* ANIMATION */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
