@@ -11,6 +11,8 @@ function Booking({ property, setActiveSection }) {
   const [phoneError, setPhoneError] = useState("");
   const dropdownRef = useRef(null);
   const dateRef = useRef(null);
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     date: "",
@@ -86,6 +88,32 @@ function Booking({ property, setActiveSection }) {
   }
 
   const image = getPropertyImage(property);
+  const handleConfirm = () => {
+    let hasError = false;
+
+    if (name.trim().length < 3) {
+      setNameError("Minimum 3 characters required");
+      hasError = true;
+    }
+
+    if (phone.length < 10) {
+      setPhoneError("Enter valid phone number");
+      hasError = true;
+    }
+
+    if (!form.date) hasError = true;
+    if (!form.time) hasError = true;
+
+    if (hasError) return;
+
+    setLoading(true);
+
+    // simulate API (replace with your real API later)
+    setTimeout(() => {
+      setLoading(false);
+      setSuccess(true);
+    }, 2000);
+  };
 
   return (
     <div className="section-container">
@@ -122,7 +150,14 @@ function Booking({ property, setActiveSection }) {
           }}
           className={nameError ? "error" : name ? "valid" : ""}
         />
-
+        {loading && (
+          <div className="form-overlay">
+            <div className="overlay-content">
+              <div className="loader"></div>
+              <p className="overlay-text">Confirming your visit...</p>
+            </div>
+          </div>
+        )}
         {nameError && <span className="error-text">{nameError}</span>}
         <input
           placeholder="Phone Number"
@@ -179,9 +214,8 @@ function Booking({ property, setActiveSection }) {
                     <div
                       key={day.value}
                       className={`calendar-day 
-    ${form.date === day.value ? "active" : ""} 
-    ${day.disabled ? "disabled" : ""}
-  `}
+                      ${form.date === day.value ? "active" : ""} 
+                              ${day.disabled ? "disabled" : ""}`}
                       onClick={() => {
                         if (day.disabled) return;
 
@@ -232,7 +266,24 @@ function Booking({ property, setActiveSection }) {
         </div>
       </div>
 
-      <button className="book-btn">Confirm Booking</button>
+      <button
+        className={`book-btn ${name.trim().length < 3 ||
+          phone.length !== 10 ||
+          !form.date ||
+          !form.time
+          ? "disabled-btn"
+          : ""
+          }`}
+        onClick={handleConfirm}
+      >
+        Confirm Booking
+      </button>
+
+      {success && (
+        <div className="success-toast center">
+          ✅ Visit Scheduled Successfully
+        </div>
+      )}
 
     </div>
   );
