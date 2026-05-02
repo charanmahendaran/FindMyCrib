@@ -422,22 +422,23 @@
   animation: fadeScale 0.4s ease;
 }
 
-/* BOOKING CARD EXIT */
-.booking-details-smooth.exit {
-  animation: cardExit 0.3s ease forwards;
-}
-
 @keyframes cardExit {
   0% {
     opacity: 1;
-    transform: scale(1) translateY(0);
-    filter: blur(0);
+    filter: blur(0px);
+    backdrop-filter: blur(35px);
+  }
+
+  60% {
+    opacity: 0.7;
+    filter: blur(6px);
+    backdrop-filter: blur(20px);
   }
 
   100% {
     opacity: 0;
-    transform: scale(0.96) translateY(20px);
-    filter: blur(4px);
+    filter: blur(12px);
+    backdrop-filter: blur(8px);
   }
 }
 
@@ -477,6 +478,28 @@
     0 30px 80px rgba(0, 0, 0, 0.9);
 
   animation: glowPulse 2.5s ease-in-out infinite;
+  transition: backdrop-filter 0.45s ease-out;
+}
+
+.details-card.exit {
+  animation: blurOut 0.5s ease-out forwards;
+}
+
+@keyframes blurOut {
+  0% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+
+  60% {
+    opacity: 0.6;
+    filter: blur(6px);
+  }
+
+  100% {
+    opacity: 0;
+    filter: blur(12px);
+  }
 }
 
 /* 🔥 SOFT PULSE (NOT ROTATION) */
@@ -600,6 +623,15 @@
   height: auto;
 }
 
+.transition-shell.expanded .details-card {
+  animation-delay: 0.15s;
+}
+
+.transition-shell:has(.booking-details-smooth.exit) {
+  backdrop-filter: blur(8px);
+  transition: backdrop-filter 0.4s ease;
+}
+
 /* =========================
    LIQUID LOADER → CARD MORPH
 ========================= */
@@ -641,14 +673,14 @@
 @keyframes cardEnterSmooth {
   0% {
     opacity: 0;
-    transform: scale(0.96) translateY(14px);
-    filter: blur(6px);
+    transform: scale(0.94) translateY(18px);
+    filter: blur(8px);
   }
 
-  60% {
-    opacity: 0.7;
-    transform: scale(1.02) translateY(4px);
-    filter: blur(2px);
+  50% {
+    opacity: 0.6;
+    transform: scale(1.015) translateY(6px);
+    filter: blur(3px);
   }
 
   100% {
@@ -656,4 +688,12 @@
     transform: scale(1) translateY(0);
     filter: blur(0);
   }
+}
+
+.transition-shell.locked {
+  width: 100% !important;
+  max-width: 520px !important;
+  height: auto !important;
+
+  transition: none !important; /* 🚫 STOP resize animation */
 }
