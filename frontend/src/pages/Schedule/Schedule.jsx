@@ -133,7 +133,7 @@ function Booking({ property, setActiveSection }) {
         setTimeout(() => {
           setShowDetails(false);
           setFinalMessage(true);
-        }, 450); // 👈 matches CSS animation
+        }, 850); // 👈 matches CSS animation
       }
     }, 1000);
 
