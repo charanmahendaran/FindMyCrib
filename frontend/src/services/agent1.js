@@ -2,10 +2,10 @@
 
 import mockData from "../data/propertiesData";
 
-const USE_MOCK = true;//Use false to fetch from API, true to use mock data
+const USE_MOCK = false;//Use false to fetch from API, true to use mock data
 
 const WEBHOOK_URL =
-  "https://learnersbyte1.app.n8n.cloud/webhook-test/property-recommend";
+  "http://localhost:5678/webhook-test/property-recommend";
 
 // 🧠 CACHE PREFIX
 const CACHE_PREFIX = "property_cache_";
@@ -50,14 +50,27 @@ function normalizeProperties(properties = []) {
   }));
 }
 
+function parseBudget(value) {
+  if (!value) return 0;
 
+  const clean = value.toString().toLowerCase().replace(/,/g, "").trim();
+
+  const num = parseFloat(clean);
+
+  if (isNaN(num)) return 0;
+
+  if (clean.includes("cr")) return num * 10000000;
+  if (clean.includes("l")) return num * 100000;
+
+  return num;
+}
 // 🚀 MAIN FUNCTION
 export async function fetchProperties(filters) {
   const { property_type, bhk } = parseType(filters.type);
 
   const payload = {
     location: filters.location?.toLowerCase() || "",
-    budget: Number(filters.budget) || 0,
+    budget: parseBudget(filters.budget),
     property_type,
     bhk,
   };

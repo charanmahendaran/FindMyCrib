@@ -221,32 +221,66 @@ function Explore({
             onClick={() => setTypeOpen((prev) => !prev)}
           >
             {type
-              ? type.replace("bhk", " BHK Apartment").replace("villa", "Villa").replace("plot", "Plot")
+              ? type.includes("plot")
+                ? "Plot"
+                : type.includes("villa")
+                  ? `${type.match(/\d+/)?.[0] || ""} BHK Villa`
+                  : `${type.match(/\d+/)?.[0] || ""} BHK Apartment`
               : "All"}
           </div>
 
           {typeOpen && (
             <div className="custom-dropdown">
               {[
-                { label: "All", value: "" },
-                { label: "1 BHK Apartment", value: "1bhk" },
-                { label: "2 BHK Apartment", value: "2bhk" },
-                { label: "3 BHK Apartment", value: "3bhk" },
-                { label: "4 BHK Apartment", value: "4bhk" },
-                { label: "Villa", value: "villa" },
-                { label: "Plot", value: "plot" },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="custom-option"
-                  onClick={() => {
-                    setType(item.value);
-                    setTypeOpen(false);
-                  }}
-                >
-                  {item.label}
-                </div>
-              ))}
+                { type: "item", label: "All", value: "" },
+
+                { type: "divider" },
+
+                // Apartment
+                { type: "group", label: "APARTMENT" },
+                { type: "item", label: "1 BHK Apartment", value: "1bhk" },
+                { type: "item", label: "2 BHK Apartment", value: "2bhk" },
+                { type: "item", label: "3 BHK Apartment", value: "3bhk" },
+                { type: "item", label: "4 BHK Apartment", value: "4bhk" },
+
+                { type: "divider" },
+
+                // Villa
+                { type: "group", label: "VILLA" },
+                { type: "item", label: "3 BHK Villa", value: "3bhk villa" },
+                { type: "item", label: "4 BHK Villa", value: "4bhk villa" },
+
+                { type: "divider" },
+
+                // Plot
+                { type: "group", label: "PLOT" },
+                { type: "item", label: "Plot", value: "plot" },
+              ].map((item, i) => {
+                if (item.type === "divider") {
+                  return <div key={i} className="dropdown-divider" />;
+                }
+
+                if (item.type === "group") {
+                  return (
+                    <div key={i} className="dropdown-group">
+                      {item.label}
+                    </div>
+                  );
+                }
+
+                return (
+                  <div
+                    key={i}
+                    className="custom-option"
+                    onClick={() => {
+                      setType(item.value);
+                      setTypeOpen(false);
+                    }}
+                  >
+                    {item.label}
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
