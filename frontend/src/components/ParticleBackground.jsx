@@ -30,11 +30,11 @@ function ParticleBackground() {
           },
 
           color: {
-            value: ["#ffffff", "#22c55e"], // 🔥 white + green mix
+            value: "#ffffff"// 🔥 white + green mix
           },
 
           opacity: {
-            value: { min: 0.25, max: 0.6 },
+            value: { min: 0.25, max: 0.55 },
             animation: {
               enable: true,
               speed: 0.6,     // 🔥 matches breathing rhythm
@@ -60,27 +60,28 @@ function ParticleBackground() {
           links: {
             enable: true,
             distance: 140,
+
             color: "#22c55e",
-            opacity: 0.12,
+
+            opacity: 0.08,  // 🔥 VERY subtle base
             width: 1,
 
             shadow: {
               enable: true,
               color: "#22c55e",
-              blur: 8,
+              blur: 6,
             },
 
             triangles: {
               enable: true,
-              opacity: 0.02,
+              opacity: 0.015,
             },
 
-            // 🔥 NEURAL PULSE
             twinkle: {
               lines: {
                 enable: true,
                 frequency: 0.02,
-                opacity: 1,
+                opacity: 0.6,
                 color: "#22c55e",
               },
               particles: {
@@ -104,15 +105,16 @@ function ParticleBackground() {
 
           modes: {
             grab: {
-              distance: 180,
+              distance: 160,
+
               links: {
-                opacity: 0.6, // 🔥 stronger near cursor
+                opacity: 0.35, // 🔥 visible but NOT full
               },
             },
 
             repulse: {
-              distance: 80,
-              duration: 0.4,
+              distance: 90,
+              duration: 0.35,
             },
           },
         },
