@@ -22,31 +22,97 @@ function ParticleBackground() {
 
         particles: {
           number: {
-            value: 55,  // balanced
+            value: 60,
+            density: {
+              enable: true,
+              area: 700, // 🔥 center bias
+            },
+          },
+
+          color: {
+            value: ["#ffffff", "#22c55e"], // 🔥 white + green mix
           },
 
           opacity: {
-            value: 0.3,  // 🔥 was too low before
+            value: { min: 0.2, max: 0.6 },
+            animation: {
+              enable: true,
+              speed: 0.4,
+              minimumValue: 0.2,
+              sync: false,
+            },
           },
 
           size: {
-            value: { min: 1.2, max: 3 },
+            value: { min: 1, max: 2.5 },
+          },
+
+          move: {
+            enable: true,
+            speed: 0.45,
+            random: true,
+            straight: false,
+            outModes: {
+              default: "bounce",
+            },
           },
 
           links: {
             enable: true,
-            opacity: 0.15,  // 🔥 visible but clean
-          },
+            distance: 140,
+            color: "#22c55e",
+            opacity: 0.12,
+            width: 1,
 
-          move: {
-            speed: 0.3,  // smooth
+            shadow: {
+              enable: true,
+              color: "#22c55e",
+              blur: 8,
+            },
+
+            triangles: {
+              enable: true,
+              opacity: 0.02,
+            },
+
+            // 🔥 NEURAL PULSE
+            twinkle: {
+              lines: {
+                enable: true,
+                frequency: 0.02,
+                opacity: 1,
+                color: "#22c55e",
+              },
+              particles: {
+                enable: true,
+                frequency: 0.015,
+                opacity: 1,
+                color: "#22c55e",
+              },
+            },
           },
         },
 
         interactivity: {
           events: {
             onHover: {
-              enable: false, // 🔥 disable
+              enable: true,
+              mode: ["grab", "repulse"],
+            },
+            resize: true,
+          },
+
+          modes: {
+            grab: {
+              distance: 180,
+              links: {
+                opacity: 0.6, // 🔥 stronger near cursor
+              },
+            },
+
+            repulse: {
+              distance: 80,
+              duration: 0.4,
             },
           },
         },
@@ -56,7 +122,7 @@ function ParticleBackground() {
       style={{
         position: "absolute",
         inset: 0,
-        zIndex: 0,
+        zIndex: 1,
       }}
     />
   );
