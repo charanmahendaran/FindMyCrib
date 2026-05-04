@@ -3,7 +3,7 @@ import "./Compare.css";
 import { getPropertyImage } from "../../utils/imageMapper";
 import { fetchComparison } from "../../services/agent3";
 
-function Compare({ compareList }) {
+function Compare({ compareList, setActiveSection }) {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -11,8 +11,15 @@ function Compare({ compareList }) {
     return (
       <div className="empty-state">
         <div className="empty-card">
-          <h2>No properties selected</h2>
-          <p>Select properties from Explore to compare</p>
+          <h2>No property selected</h2>
+          <p>Select a property from Explore</p>
+
+          <p
+            className="empty-cta"
+            onClick={() => setActiveSection("explore")}
+          >
+            Go to Explore →
+          </p>
         </div>
       </div>
     );
