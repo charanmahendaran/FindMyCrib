@@ -34,12 +34,12 @@ function ParticleBackground() {
           },
 
           opacity: {
-            value: { min: 0.2, max: 0.6 },
+            value: { min: 0.25, max: 0.6 },
             animation: {
               enable: true,
-              speed: 0.4,
-              minimumValue: 0.2,
-              sync: false,
+              speed: 0.6,     // 🔥 matches breathing rhythm
+              minimumValue: 0.25,
+              sync: true,     // 🔥 ALL particles pulse together
             },
           },
 
