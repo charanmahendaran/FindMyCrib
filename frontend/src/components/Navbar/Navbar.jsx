@@ -19,7 +19,7 @@ function Navbar({ setActiveSection, activeSection }) {
           onClick={() => setActiveSection("hero")}
         >
           <img
-            src="/assets/logo/logo.jpeg"   // 👈 you will replace this
+            src="/assets/logo/logo.jpeg"
             alt="FindMyCrib Logo"
             className="logo-img"
           />
@@ -29,11 +29,14 @@ function Navbar({ setActiveSection, activeSection }) {
 
         {/* CENTER */}
         <div className="nav-center">
-          {navItems.map((item) => (
+          {navItems.map((item, i) => (
             <button
               key={item.id}
-              className={`nav-pill ${activeSection === item.id ? "active" : ""}`}
+              className={`nav-pill nav-animate ${activeSection === item.id ? "active" : ""}`}
               onClick={() => setActiveSection(item.id)}
+              style={{
+                animationDelay: `${0.2 + i * 0.08}s`, // 🔥 stagger
+              }}
             >
               <span>{item.label}</span>
               <div className="hover-glow"></div>
