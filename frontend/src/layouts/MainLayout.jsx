@@ -5,7 +5,9 @@ import Navbar from "../components/Navbar/Navbar";
 
 // Sections
 import Hero from "../pages/Hero/Hero";
-import Explore from "../pages/Explore/Explore";
+import { lazy, Suspense } from "react";
+
+const Explore = lazy(() => import("../pages/Explore/Explore"));
 import PriceCheck from "../pages/PriceCheck/PriceCheck";
 import Compare from "../pages/Compare/Compare";
 import Finance from "../pages/Finance/Finance";
@@ -32,12 +34,14 @@ function MainLayout() {
     switch (activeSection) {
       case "explore":
         return (
-          <Explore
-            setActiveSection={handleSectionChange}
-            setSelectedProperty={setSelectedProperty}
-            compareList={compareList}
-            setCompareList={setCompareList}
-          />
+          <Suspense fallback={null}>
+            <Explore
+              setActiveSection={handleSectionChange}
+              setSelectedProperty={setSelectedProperty}
+              compareList={compareList}
+              setCompareList={setCompareList}
+            />
+          </Suspense>
         );
 
       case "price":
