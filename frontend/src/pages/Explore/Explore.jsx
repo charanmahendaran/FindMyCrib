@@ -192,8 +192,22 @@ function Explore({
   };
 
   return (
-    <div className="explore-container">
+    <div className={`explore-container ${hasSearched ? "bg-active" : ""}`}>
       <h2 className="explore-title">Explore Properties</h2>
+      <div className="explore-bg">
+        {/* foreground (out of focus) */}
+        <span className="orb fg"></span>
+        <span className="orb fg"></span>
+
+        {/* mid (in focus) */}
+        <span className="orb mid"></span>
+        <span className="orb mid"></span>
+        <span className="orb mid"></span>
+
+        {/* background (far away) */}
+        <span className="orb bg"></span>
+        <span className="orb bg"></span>
+      </div>
 
       {/* ================= FILTER PANEL ================= */}
       <div className="filter-panel">

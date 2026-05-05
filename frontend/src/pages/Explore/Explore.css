@@ -513,3 +513,119 @@
 .explore-container {
   overflow: visible;
 }
+
+.explore-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+/* 🔥 only after search */
+.bg-active .explore-bg {
+  opacity: 1;
+  transition-delay: 0.7s;
+  /* ← YOU CONTROL THIS */
+}
+
+/* shared */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  animation: drift linear infinite;
+}
+
+.orb.fg {
+  width: 500px;
+  height: 500px;
+
+  background:
+    radial-gradient(circle at 30% 30%,
+      rgba(120, 180, 255, 0.12),   /* 🔵 soft blue highlight */
+      rgba(120, 180, 255, 0.05) 20%,
+      rgba(10, 15, 30, 0.6) 60%,
+      rgba(0, 0, 0, 0.9) 100%
+    );
+
+  filter: blur(100px);
+  opacity: 0.85;
+
+  animation-duration: 45s;
+}
+
+.orb.mid {
+  width: 160px;
+  height: 160px;
+
+  background:
+    radial-gradient(circle at 35% 35%,
+      rgba(140, 190, 255, 0.25),   /* 🔵 stronger highlight */
+      rgba(100, 160, 255, 0.12) 20%,
+      rgba(15, 25, 45, 0.85) 60%,
+      rgba(5, 10, 20, 1) 100%
+    );
+
+  box-shadow:
+    inset -25px -25px 50px rgba(0, 0, 0, 0.9),
+    inset 12px 12px 25px rgba(120, 180, 255, 0.15); /* 🔵 blue light */
+
+  filter: blur(4px);
+  opacity: 0.9;
+
+  animation-duration: 28s;
+}
+
+.orb.bg {
+  width: 70px;
+  height: 70px;
+
+  background:
+    radial-gradient(circle at 40% 40%,
+      rgba(120, 180, 255, 0.15),
+      rgba(0, 0, 0, 0.95) 70%
+    );
+
+  filter: blur(2px);
+  opacity: 0.35;
+
+  animation-duration: 55s;
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  25% {
+    transform: translate(120px, -80px) scale(1.05);
+  }
+
+  50% {
+    transform: translate(-100px, 100px) scale(0.95);
+  }
+
+  75% {
+    transform: translate(80px, 60px) scale(1.02);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* foreground */
+.orb.fg:nth-child(1) { top: 5%; left: 10%; }
+.orb.fg:nth-child(2) { top: 65%; left: 75%; }
+
+/* mid */
+.orb.mid:nth-child(3) { top: 20%; left: 60%; }
+.orb.mid:nth-child(4) { top: 70%; left: 30%; }
+.orb.mid:nth-child(5) { top: 40%; left: 80%; }
+
+/* background */
+.orb.bg:nth-child(6) { top: 10%; left: 80%; }
+.orb.bg:nth-child(7) { top: 85%; left: 15%; }
