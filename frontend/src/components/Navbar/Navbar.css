@@ -56,10 +56,11 @@
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
   color: #e5e5e5;
   transition: 0.3s;
+  line-height: 1;
 }
 
 .nav-left:hover {
@@ -119,7 +120,21 @@
     0 6px 20px rgba(255, 255, 255, 0.12),
     inset 0 0 10px rgba(255, 255, 255, 0.08);
 
-  transform: translateY(-2px) scale(1.04);
+  /*transform: translateY(-2px) scale(1.04);*/
+}
+
+.nav-pill.active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  opacity: 0.6;
+}
+
+.nav-pill.active:hover {
+  transform: translateY(-3px) scale(1.05);
 }
 
 /* 🌊 GLOW EFFECT */
@@ -203,11 +218,13 @@
   transform: scale(1.1);
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
 }
+
 @keyframes pillEnter {
   from {
     opacity: 0;
     transform: translateY(10px) translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) translateX(0);
