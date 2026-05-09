@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import "./PriceCheck.css";
 import { getPropertyImage } from "../../utils/imageMapper";
 import { fetchPriceAnalysis } from "../../services/agent2";
+import PriceScene from "../../components/PriceScene/PriceScene";
 
 function PriceCheck({ property, setActiveSection }) {
   const [analysis, setAnalysis] = useState(null);
@@ -71,7 +72,15 @@ function PriceCheck({ property, setActiveSection }) {
 
     return `${formatPrice(min)} - ${formatPrice(max)}`;
   };
+  const [visible, setVisible] = useState(false);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setVisible(true);
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, []);
   // ✅ FIXED SUMMARY FORMATTER
   const formatSummary = (text) => {
     if (!text) return "";
@@ -112,91 +121,102 @@ function PriceCheck({ property, setActiveSection }) {
 
   const image = getPropertyImage(property);
 
+  const riskLevel =
+    property?.risk ||
+    analysis?.risk_check?.risk_level ||
+    "low";
+    
   const singleFlag =
     analysis?.risk_check?.flag ||
     analysis?.risk_check?.flags?.[0] ||
     "No major risks identified.";
 
+  if (!visible) return null;
+
   return (
-    <div className="section">
-      <h2>Price Intelligence</h2>
+    <>
+      <PriceScene risk={riskLevel} />
 
-      {/* PROPERTY HEADER */}
-      <div className="property-main">
-        <img src={image} alt="" />
-        <div>
-          <h3>{property.name}</h3>
-          <p>{property.location}</p>
-          <p>{property.price}</p>
-        </div>
-      </div>
+      <div className="section">
+        <h2>Price Intelligence</h2>
 
-      {/* LOADING */}
-      {loading && (
-        <div className="price-loading-overlay">
-          <div className="loader-card">
-            <div className="spinner"></div>
-
-            <h3>Analyzing Property</h3>
-
-            <p className="typing-text">
-              Evaluating price, risks & trends<span className="dots"></span>
-            </p>
+        {/* PROPERTY HEADER */}
+        <div className="property-main">
+          <img src={image} alt="" />
+          <div>
+            <h3>{property.name}</h3>
+            <p>{property.location}</p>
+            <p>{property.price}</p>
           </div>
         </div>
-      )}
 
-      {/* RESULT */}
-      {analysis && !loading && (
-        <>
-          {/* 🔥 CARDS */}
-          {showCards && (
-            <div className="cards-row fade-in">
-              <div className="result-card">
-                <h4>Price Status</h4>
-                <p>{analysis.price_analysis.price_status}</p>
-              </div>
+        {/* LOADING */}
+        {loading && (
+          <div className="price-loading-overlay">
+            <div className="loader-card">
+              <div className="spinner"></div>
 
-              <div className="result-card">
-                <h4>Estimated Range</h4>
-                <p>
-                  {formatRange(
-                    analysis.price_analysis.estimated_price_range
-                  )}
-                </p>
-              </div>
+              <h3>Analyzing Property</h3>
 
-              <div
-                className={`result-card status ${analysis.risk_check.risk_level}`}
-              >
-                <h4>Risk Level</h4>
-                <p>{analysis.risk_check.risk_level}</p>
-              </div>
+              <p className="typing-text">
+                Evaluating price, risks & trends<span className="dots"></span>
+              </p>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* 🔥 FLAG */}
-          {showFlag && (
-            <div className="flags-section fade-in">
-              <h4>Risk Insight</h4>
-              <div className="flag-item single">
-                ⚠️ {singleFlag}
-              </div>
-            </div>
-          )}
+        {/* RESULT */}
+        {analysis && !loading && (
+          <>
+            {/* 🔥 CARDS */}
+            {showCards && (
+              <div className="cards-row fade-in">
+                <div className="result-card">
+                  <h4>Price Status</h4>
+                  <p>{analysis.price_analysis.price_status}</p>
+                </div>
 
-          {/* 🔥 SUMMARY */}
-          {showSummary && (
-            <div className="summary-section fade-in">
-              <h4>AI Insight</h4>
-              <div className="summary-box">
-                💡 {formatSummary(analysis.summary)}
+                <div className="result-card">
+                  <h4>Estimated Range</h4>
+                  <p>
+                    {formatRange(
+                      analysis.price_analysis.estimated_price_range
+                    )}
+                  </p>
+                </div>
+
+                <div
+                  className={`result-card status ${riskLevel}`}
+                >
+                  <h4>Risk Level</h4>
+                  <p>{riskLevel}</p>
+                </div>
               </div>
-            </div>
-          )}
-        </>
-      )}
-    </div>
+            )}
+
+            {/* 🔥 FLAG */}
+            {showFlag && (
+              <div className="flags-section fade-in">
+                <h4>Risk Insight</h4>
+                <div className="flag-item single">
+                  ⚠️ {singleFlag}
+                </div>
+              </div>
+            )}
+
+            {/* 🔥 SUMMARY */}
+            {showSummary && (
+              <div className="summary-section fade-in">
+                <h4>AI Insight</h4>
+                <div className="summary-box">
+                  💡 {formatSummary(analysis.summary)}
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </>
   );
 }
 
