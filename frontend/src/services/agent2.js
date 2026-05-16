@@ -3,7 +3,7 @@
 const USE_MOCK = true; // Set to false to fetch from API, true to use mock data
 
 const WEBHOOK_URL =
-  "https://learnersbyte1.app.n8n.cloud/webhook/price-intelligence";
+  "http://localhost:5678/webhook/price-intelligence";
 
 // 🧠 CACHE + INFLIGHT
 const CACHE_PREFIX = "price_cache_";

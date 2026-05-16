@@ -3,7 +3,7 @@
 const USE_MOCK = true; // Set to false to fetch from API, true to use mock data
 
 const WEBHOOK_URL =
-  "https://learnersbyte1.app.n8n.cloud/webhook/schedule-visit";
+  "http://localhost:5678/webhook/schedule-visit";
 
 // 🧠 CACHE
 const CACHE_PREFIX = "booking_cache_";

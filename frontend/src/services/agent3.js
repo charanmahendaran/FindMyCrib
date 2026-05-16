@@ -2,7 +2,7 @@
 
 const USE_MOCK = true; // Set to false to fetch from API, true to use mock data
 const WEBHOOK_URL =
-  "https://learnersbyte1.app.n8n.cloud/webhook/deal-comparison";
+  "http://localhost:5678/webhook/deal-comparison";
 
 // 🧠 CACHE + INFLIGHT
 const CACHE_PREFIX = "compare_cache_";

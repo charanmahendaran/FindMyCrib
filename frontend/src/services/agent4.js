@@ -3,7 +3,7 @@
 const USE_MOCK = true; // Set to false to fetch from API, true to use mock data
 
 const WEBHOOK_URL =
-  "https://learnersbyte1.app.n8n.cloud/webhook/price-financial";
+  "http://localhost:5678/webhook/price-financial";
 
 // 🧠 EMI FORMULA (LOCAL)
 function calculateEMI(principal, rate, tenureYears) {
