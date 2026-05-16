@@ -214,47 +214,113 @@
   inset: 0;
   border-radius: 30px;
 
-  box-shadow: 0 0 0 rgba(34,197,94,0);
+  box-shadow: 0 0 0 rgba(34, 197, 94, 0);
   transition: box-shadow 0.4s ease;
 }
 
 .book-btn:hover::after {
-  box-shadow: 0 0 18px rgba(34,197,94,0.25);
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.25);
 }
 
 /* =========================
    LOADER + OVERLAY
 ========================= */
 .form-overlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 180px;
+
+  background:
+    radial-gradient(circle at center,
+      rgba(0, 0, 0, 0.35) 0%,
+      rgba(0, 0, 0, 0.72) 75%);
+
+  backdrop-filter: blur(38px) saturate(0.7);
+  -webkit-backdrop-filter: blur(38px) saturate(0.7);
+
+  z-index: 999999;
+
+  animation: overlayFadeIn 0.35s ease;
+}
+
+.form-overlay::before {
+  content: "";
+
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
 
-  backdrop-filter: blur(12px);
-  background: rgba(0, 0, 0, 0.5);
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255,255,255,0.03),
+      transparent 60%
+    );
+
+  pointer-events: none;
 }
 
 .overlay-content {
-  padding: 25px 30px;
-  border-radius: 16px;
-  backdrop-filter: blur(20px);
-  background: rgba(20, 20, 20, 0.7);
+  width: 340px;
+  height: 240px;
+
+  border-radius: 34px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(22, 22, 22, 0.78),
+      rgba(8, 8, 8, 0.58));
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  backdrop-filter: blur(45px);
+  -webkit-backdrop-filter: blur(45px);
+
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 20px 60px rgba(0, 0, 0, 0.9),
+    0 0 60px rgba(255, 255, 255, 0.03);
+
+  animation: overlayCardIn 0.45s ease;
 }
 
 .loader {
-  width: 42px;
-  height: 42px;
+  width: 64px;
+  height: 64px;
+
   border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.15);
-  border-top: 3px solid #22c55e;
-  animation: spin 1s linear infinite;
+
+  border: 4px solid rgba(255, 255, 255, 0.14);
+  border-top: 4px solid rgba(34, 197, 94, 0.95);
+
+  animation: spin 0.9s linear infinite;
+
+  box-shadow:
+    0 0 20px rgba(34, 197, 94, 0.15);
 }
 
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
+}
+
+.overlay-text {
+  font-size: 17px;
+  font-weight: 400;
+
+  color: rgba(255,255,255,0.92);
+
+  letter-spacing: 0.2px;
 }
 
 /* =========================
@@ -766,4 +832,30 @@
 
   transition: none !important;
   /* 🚫 STOP resize animation */
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+
+  to {
+    opacity: 1;
+    backdrop-filter: blur(22px);
+  }
+}
+
+@keyframes overlayCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+    filter: blur(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+    filter: blur(0px);
+  }
 }
