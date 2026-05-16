@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const currencyData = [
   { symbol: "$", left: "8%", top: "18%", size: "85px" },
@@ -17,6 +17,18 @@ const currencyData = [
 ];
 
 function FinanceBackground({ affordability }) {
+  const [transitioning, setTransitioning] = useState(false);
+  useEffect(() => {
+    if (!affordability) return;
+
+    setTransitioning(true);
+
+    const timer = setTimeout(() => {
+      setTransitioning(false);
+    }, 650);
+
+    return () => clearTimeout(timer);
+  }, [affordability]);
   const getRiskClass = () => {
     if (!affordability) return "neutral";
 
@@ -27,7 +39,13 @@ function FinanceBackground({ affordability }) {
   };
 
   return (
-    <div className={`finance-bg ${getRiskClass()}`}>
+    <div
+      className={`
+    finance-bg
+    ${getRiskClass()}
+    ${transitioning ? "transitioning" : ""}
+  `}
+    >
       <div className="finance-fog"></div>
 
       <div className="currency-field">

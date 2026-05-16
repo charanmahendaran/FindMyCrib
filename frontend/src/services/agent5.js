@@ -1,6 +1,6 @@
 // src/services/agent5.js
 
-const USE_MOCK = true; // Set to false to fetch from API, true to use mock data
+const USE_MOCK = false; // Set to false to fetch from API, true to use mock data
 
 const WEBHOOK_URL =
   "http://localhost:5678/webhook/schedule-visit";
@@ -16,7 +16,7 @@ const mockResponse = {
   data: {
     booking_id: "VISIT-MOCK1234",
     visit_details: {
-      property_name: "Prestige Lakeside Habitat",
+      property_name: "Prestige Lakeside Habitat", 
       location: "Whitefield",
       date: "2026-05-11",
       time: "4:00 PM",
