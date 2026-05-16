@@ -1,6 +1,6 @@
 // src/services/agent5.js
 
-const USE_MOCK = false; // Set to false to fetch from API, true to use mock data
+const USE_MOCK = true; // Set to false to fetch from API, true to use mock data
 
 const WEBHOOK_URL =
   "http://localhost:5678/webhook/schedule-visit";
