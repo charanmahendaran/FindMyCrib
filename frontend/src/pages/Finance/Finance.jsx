@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./Finance.css";
 import { fetchFinanceAnalysis } from "../../services/agent4";
 import { getPropertyImage } from "../../utils/imageMapper";
+import FinanceBackground from "../../components/FinanceBackground";
 
 function Finance({ property, setActiveSection }) {
   const [income, setIncome] = useState(80000);
@@ -144,7 +145,11 @@ function Finance({ property, setActiveSection }) {
   }
 
   return (
-    <div className="section finance-wrapper">
+  <div className="section finance-wrapper">
+
+    <FinanceBackground
+      affordability={result?.affordability}
+    />
       <h2>Financial Analysis</h2>
 
       {/* PROPERTY */}
