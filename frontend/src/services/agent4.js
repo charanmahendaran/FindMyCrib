@@ -8,7 +8,7 @@ const WEBHOOK_URL =
 // 🧠 EMI FORMULA (LOCAL)
 function calculateEMI(principal, rate, tenureYears) {
   const monthlyRate = rate / 12 / 100;
-  const months = tenureYears * 12;
+  const months = tenureYears * 12; 
 
   const emi =
     (principal *
