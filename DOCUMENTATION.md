@@ -183,7 +183,7 @@ Vite prints the local URL after startup. Use the following scripts from `fronten
 
 ```dotenv
 VITE_USE_MOCK=true
-VITE_API_URL=https://learnersbyte1.app.n8n.cloud/webhook-test/property-recommend
+VITE_API_URL=""
 ```
 
 These variables are not read by the existing service files. The effective runtime switches are the hard-coded `USE_MOCK` and `WEBHOOK_URL` constants in `agent1.js` through `agent5.js`. Before deployment, centralize those settings through `import.meta.env`, keep `.env` values limited to public client configuration, and use production n8n webhook URLs only where they are safe to expose.
