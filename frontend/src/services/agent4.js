@@ -2,7 +2,7 @@
 
 const USE_MOCK = true; // Set to false to fetch from API, true to use mock data
 
-const WEBHOOK_URL = "";
+const WEBHOOK_URL = "";//Use Webhook URL for API mode
 
 // 🧠 EMI FORMULA (LOCAL)
 function calculateEMI(principal, rate, tenureYears) {
