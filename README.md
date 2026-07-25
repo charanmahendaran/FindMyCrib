@@ -103,35 +103,58 @@ Implementation notes:
 
 Use the placeholders below if you want to add project images to the repository later. The README remains readable even if these assets are not present.
 
-### Hero
+<h3 align="left">Hero</h3>
 
-<!-- Insert Hero section screenshot here -->
-<!-- Suggested path: docs/screenshots/hero.png -->
+<p align="center">
+  <img src="Resources/01-hero-section.png" alt="Hero Section" width="900">
+</p>
 
-### Explore
 
-<!-- Insert Explore section screenshot here -->
-<!-- Suggested path: docs/screenshots/explore.png -->
+<h3 align="left">Explore</h3>
 
-### Price Check
+<p align="center">
+  <img src="Resources/08-explore-step-1.png" alt="Explore - Step 1" width="900">
+  <br><br>
+  <img src="Resources/09-explore-step-2.png" alt="Explore - Step 2" width="900">
+  <br><br>
+  <img src="Resources/10-explore-step-3.png" alt="Explore - Step 3" width="900">
+</p>
 
-<!-- Insert Price Check screenshot here -->
-<!-- Suggested path: docs/screenshots/price-check.png -->
+<h3 align="left">Price Check</h3>
 
-### Compare
+<p align="center">
+  <img src="Resources/14-price-check.png" alt="Price Check" width="900">
+</p>
 
-<!-- Insert Compare section screenshot here -->
-<!-- Suggested path: docs/screenshots/compare.png -->
+<h3 align="left">Compare</h3>
 
-### Finance
+<p align="center">
+  <img src="Resources/05-compare-step-1.png" alt="Compare - Step 1" width="900">
+  <br><br>
+  <img src="Resources/06-compare-step-2.png" alt="Compare - Step 2" width="900">
+  <br><br>
+  <img src="Resources/07-compare-step-3.png" alt="Compare - Step 3" width="900">
+</p>
 
-<!-- Insert Finance section screenshot here -->
-<!-- Suggested path: docs/screenshots/finance.png -->
+<h3 align="left">Finance</h3>
 
-### Book Visit
+<p align="center">
+  <img src="Resources/11-finance-step-1.png" alt="Finance - Step 1" width="900">
+  <br><br>
+  <img src="Resources/12-finance-step-2.png" alt="Finance - Step 2" width="900">
+  <br><br>
+  <img src="Resources/13-finance-step-3.png" alt="Finance - Step 3" width="900">
+</p>
 
-<!-- Insert Book Visit section screenshot here -->
-<!-- Suggested path: docs/screenshots/book-visit.png -->
+<h3 align="left">Book Visit</h3>
+
+<p align="center">
+  <img src="Resources/02-book-visit-step-1.png" alt="Book Visit - Step 1" width="900">
+  <br><br>
+  <img src="Resources/03-book-visit-step-2.png" alt="Book Visit - Step 2" width="900">
+  <br><br>
+  <img src="Resources/04-book-visit-step-3.png" alt="Book Visit - Step 3" width="900">
+</p>
 
 ### GIF / Video
 
