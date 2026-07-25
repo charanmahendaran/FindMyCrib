@@ -1,0 +1,49 @@
+.compare-scene-container {
+  position: fixed;
+  inset: 0;
+
+  z-index: 0;
+
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* cinematic glow */
+.compare-scene-container::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 70% 40%,
+      rgba(6, 182, 212, 0.08),
+      transparent 35%
+    );
+
+  filter: blur(80px);
+
+  pointer-events: none;
+}
+
+/* subtle spatial depth */
+.compare-scene-container::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to right,
+      rgba(255,255,255,0.01),
+      transparent 30%,
+      transparent 70%,
+      rgba(255,255,255,0.015)
+    );
+
+  opacity: 0.6;
+
+  pointer-events: none;
+}

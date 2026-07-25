@@ -1,0 +1,331 @@
+.hero-container {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 70px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0a0a0a;
+  overflow: hidden;
+
+  background:
+    radial-gradient(circle at 50% 40%, #111111 0%, #000000 70%);
+
+  opacity: 0;
+  animation: heroFade 1s ease forwards;
+}
+
+@keyframes heroFade {
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/noise.png");
+  opacity: 0.025;
+  /* VERY low */
+  pointer-events: none;
+}
+
+.hero-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(circle at center,
+      transparent 35%,
+      rgba(0, 0, 0, 0.55)100%);
+
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center,
+      rgba(255, 255, 255, 0.06),
+      transparent 60%);
+  pointer-events: none;
+}
+
+.blur-orb {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 50%;
+  filter: blur(120px);
+}
+
+.orb1 {
+  top: 15%;
+  left: 20%;
+}
+
+.orb2 {
+  bottom: 10%;
+  right: 15%;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.15;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 750px;
+  padding: 20px;
+
+  /* subtle silver tint (not full gradient) */
+  color: rgba(255, 255, 255, 0.85);
+
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.10),
+    0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+/* 🔥 GLOW LAYER */
+.hero-bg-glow {
+  position: absolute;
+  width: 650px;
+  height: 650px;
+
+  background: radial-gradient(circle,
+      rgba(255, 255, 255, 0.04),
+      transparent 70%);
+
+
+  filter: blur(90px);
+  z-index: 0;
+
+  /* 🔥 synced breathing */
+  animation: aiBreath 6s ease-in-out infinite;
+}
+
+@keyframes floatGlow {
+  from {
+    transform: translateY(-40px) scale(1);
+  }
+
+  to {
+    transform: translateY(40px) scale(1.1);
+  }
+}
+
+@keyframes aiBreath {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 0.65;
+  }
+}
+
+/* 🔥 CONTENT LAYER */
+.hero-content {
+  position: relative;
+  z-index: 2;
+
+  text-align: center;
+  max-width: 750px;
+  padding: 20px;
+}
+
+/* ✨ TITLE */
+.hero-title {
+  font-size: 56px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 18px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 0.8s ease forwards;
+  animation-delay: 0.3s;
+}
+
+/* GRADIENT TEXT */
+.hero-title span {
+  position: relative;
+
+  background: linear-gradient(110deg,
+      #f5f5f5 0%,
+      #dcdcdc 20%,
+      #ffffff 40%,
+      #cfcfcf 60%,
+      #f5f5f5 80%);
+
+  background-size: 220% auto;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  animation: silverFlow 6s linear infinite;
+
+  /* 🔥 strongest but still controlled */
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.20),
+    0 0 16px rgba(255, 255, 255, 0.10);
+}
+
+@keyframes silverFlow {
+  0% {
+    background-position: 0% center;
+  }
+
+  100% {
+    background-position: 220% center;
+  }
+}
+
+/* SUBTEXT */
+.hero-sub {
+  position: relative;
+
+  font-size: 18px;
+  margin-bottom: 40px;
+
+  background: linear-gradient(110deg,
+      #d6d6d6 0%,
+      #c8c8c8 25%,
+      #e0e0e0 50%,
+      #c8c8c8 75%,
+      #d6d6d6 100%);
+
+  background-size: 220% auto;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  animation: silverFlow 6.8s linear infinite;
+
+  /* 🔥 softest glow */
+  text-shadow:
+    0 0 3px rgba(255, 255, 255, 0.10),
+    0 0 8px rgba(255, 255, 255, 0.04);
+
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 0.8s ease forwards;
+  animation-delay: 0.5s;
+}
+
+
+/* 🔥 BUTTON */
+.hero-btn {
+  position: relative;
+  padding: 14px 32px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+
+  font-size: 15px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+
+  overflow: hidden;
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0.2);
+  animation: pulseGlow 3s ease-in-out infinite;
+
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 0.8s ease forwards;
+  animation-delay: 0.7s;
+}
+
+@keyframes pulseGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+  }
+}
+
+/* ✨ HOVER */
+.hero-btn:hover {
+  transform: translateY(-4px) scale(1.06);
+
+  background: rgba(255, 255, 255, 0.1);
+
+  box-shadow:
+    0 10px 30px rgba(255, 255, 255, 0.1),
+    inset 0 0 12px rgba(255, 255, 255, 0.08);
+}
+
+/* 🌊 BUTTON GLOW */
+.btn-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  background: radial-gradient(circle,
+      rgba(255, 255, 255, 0.25),
+      transparent 70%);
+
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.hero-btn:hover .btn-glow {
+  opacity: 0.4;
+}
+
+/* ✨ ENTRY ANIMATION */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#tsparticles canvas {
+  filter:
+    drop-shadow(0 0 5px rgba(255, 255, 255, 0.25))
+    /* particle clarity */
+    drop-shadow(0 0 6px rgba(34, 197, 94, 0.15))
+    /* subtle green network */
+    contrast(115%);
+  will-change: transform;
+}
+
+#tsparticles {
+  pointer-events: auto;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* 🔥 bring above glow */
+}

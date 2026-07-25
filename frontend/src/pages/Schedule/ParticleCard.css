@@ -1,0 +1,42 @@
+.particle-card {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.05);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 0 25px rgba(255,255,255,0.08),
+    0 20px 50px rgba(0,0,0,0.8);
+
+  animation: flashIn 0.5s ease;
+}
+
+@keyframes flashIn {
+  0% { opacity: 0; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.booking-details-smooth {
+  margin-top: 20px;
+  animation: fadeSlide 0.6s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

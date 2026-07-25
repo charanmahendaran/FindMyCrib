@@ -1,0 +1,272 @@
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 70px;
+  z-index: 1000;
+
+  background: rgba(10, 10, 10, 0.6);
+  /* slightly lifted */
+  backdrop-filter: blur(16px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  /* 🔥 depth */
+
+  transform: translateY(-20px);
+  animation: navFade 0.8s ease forwards;
+}
+
+@keyframes navFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.08),
+      transparent);
+
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* INNER */
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 20px;
+}
+
+/* LOGO */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #e5e5e5;
+  transition: 0.3s;
+  line-height: 1;
+}
+
+.nav-left:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+/* NAV CENTER */
+.nav-center {
+  display: flex;
+  gap: 14px;
+}
+
+/* 🔥 PREMIUM PILLS */
+.nav-pill {
+  position: relative;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  overflow: hidden;
+
+  opacity: 0;
+  animation: pillEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ✨ HOVER LIFT + DEPTH */
+.nav-pill:hover {
+  transform: translateY(-3px) scale(1.05);
+
+  color: #fff;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 8px 25px rgba(255, 255, 255, 0.08),
+    inset 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+/* 💫 ACTIVE STATE */
+.nav-pill.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 6px 20px rgba(255, 255, 255, 0.12),
+    inset 0 0 10px rgba(255, 255, 255, 0.06);
+}
+
+.nav-pill.active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  /* thickness of border */
+
+  background: linear-gradient(120deg,
+      transparent,
+      rgba(255, 255, 255, 0.8),
+      transparent);
+  background-size: 200% 200%;
+
+  animation: borderFlow 2.5s linear infinite;
+
+  /* 🔥 THIS is the magic — makes it border-only */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+}
+
+@keyframes borderFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.nav-pill.active:hover {
+  transform: translateY(-3px) scale(1.05);
+}
+
+/* 🌊 GLOW EFFECT */
+.hover-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  background: radial-gradient(circle at center,
+      rgba(255, 255, 255, 0.25),
+      transparent 70%);
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-pill:hover .hover-glow {
+  opacity: 0.4;
+}
+
+/* ✨ SHINE SWEEP */
+.nav-pill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+
+  background: linear-gradient(120deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
+
+  transition: 0.6s;
+}
+
+.nav-pill:hover::after {
+  left: 100%;
+}
+
+/* LOGO IMAGE */
+.logo-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+
+  transition: 0.3s ease;
+}
+
+/* LOGO TEXT (NEW FONT) */
+.logo-text {
+  font-family: "ClashGrotesk", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+
+  color: #e5e5e5;
+
+  transition: all 0.3s ease;
+}
+
+/* ✨ HOVER EFFECT */
+.nav-left:hover .logo-text {
+  color: #ffffff;
+
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.6),
+    0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.logo-img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+
+  transition: all 0.3s ease;
+}
+
+.nav-left:hover .logo-img {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+}
+
+@keyframes pillEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+}
+
+.nav-center .nav-pill:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.nav-center .nav-pill:nth-child(2) {
+  animation-delay: 0.35s;
+}
+
+.nav-center .nav-pill:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.nav-center .nav-pill:nth-child(4) {
+  animation-delay: 0.65s;
+}
+
+.nav-center .nav-pill:nth-child(5) {
+  animation-delay: 0.8s;
+}

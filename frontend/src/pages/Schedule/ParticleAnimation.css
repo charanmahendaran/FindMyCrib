@@ -1,0 +1,66 @@
+/* FULLSCREEN OVERLAY */
+.particle-wrapper {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(25px);
+
+  z-index: 9999;
+}
+
+/* CANVAS */
+.particle-canvas {
+  width: 220px;
+  height: 280px;
+  border-radius: 14px;
+}
+
+/* PAPER GLASS */
+.paper-overlay {
+  position: absolute;
+  width: 220px;
+  height: 280px;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0.04)
+  );
+
+  backdrop-filter: blur(20px);
+
+  box-shadow:
+    0 0 40px rgba(255,255,255,0.08),
+    0 30px 80px rgba(0,0,0,0.9);
+
+  animation: paperFade 2.5s ease forwards;
+}
+
+@keyframes paperFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  70% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.particle-wrapper {
+  position: relative !important;
+  inset: unset !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  z-index: 1;
+}
