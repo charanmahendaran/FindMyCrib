@@ -4,8 +4,7 @@ import mockData from "../data/propertiesData";
 
 const USE_MOCK = true;//Use false to fetch from API, true to use mock data
 
-const WEBHOOK_URL =
-  "http://localhost:5678/webhook/property-recommend";
+const WEBHOOK_URL = "";//Use Webhook URL for API mode
 
 // 🧠 CACHE PREFIX
 const CACHE_PREFIX = "property_cache_";
