@@ -156,10 +156,9 @@ Use the placeholders below if you want to add project images to the repository l
   <img src="Resources/04-book-visit-step-3.png" alt="Book Visit - Step 3" width="900">
 </p>
 
-### GIF / Video
+### Video
 
-<!-- Insert demo GIF here -->
-<!-- Insert demo video / YouTube embed link here -->
+
 
 ## Installation
 
@@ -171,7 +170,7 @@ Use the placeholders below if you want to add project images to the repository l
 ### Setup
 
 ```bash
-git clone <repository-url>
+git clone <https://github.com/charanmahendaran/FindMyCrib.git>
 cd findmycrib-ui/frontend
 npm install
 ```
@@ -269,8 +268,6 @@ The interface is fully usable in mock mode and demonstrates the intended product
 ## Contributors
 
 - Charan M - frontend design, implementation, and product workflow integration
-
-If more contributors join later, list them here with their roles and links.
 
 ## License
 
