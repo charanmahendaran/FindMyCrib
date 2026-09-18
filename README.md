@@ -1,278 +1,473 @@
-# FindMyCrib
+# 🏠 FindMyCrib
 
-[![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev/)
-[![React](https://img.shields.io/badge/React-19.x-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-ESM-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![License](https://img.shields.io/badge/License-Proprietary-red?style=flat-square)](./LICENSE)
+### AI-Driven Real Estate Intelligence Platform
 
-AI-powered real estate intelligence frontend for discovering properties, checking price competitiveness, comparing options, estimating affordability, and booking site visits.
+FindMyCrib is a modern real-estate intelligence platform designed to help users **discover, evaluate, compare, and make informed decisions about residential properties** through an interactive AI-inspired workflow.
 
-> Demo video / YouTube link: <!-- Insert demo video or YouTube link here -->
+The application combines property discovery, price intelligence, comparison, financial analysis, and site-visit booking into a single streamlined experience.
 
-> All commands below assume you are inside `frontend/`, which contains the Vite application.
 
-## Table of Contents
+---
 
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Architecture / Workflow](#architecture--workflow)
-- [Screenshots / Media Placeholders](#screenshots--media-placeholders)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Results](#results)
-- [Future Improvements](#future-improvements)
-- [Contributors](#contributors)
-- [License](#license)
+## 🌐 Live Demo
 
-## Project Overview
+**Web Application:**
+[FindMyCrib](https://find-my-crib-tau.vercel.app)
 
-FindMyCrib is a dark-themed, single-page React application built to help users explore residential properties and move through a guided decision flow:
+---
 
-1. Discover properties in the Explore view.
-2. Inspect price intelligence and risk signals.
-3. Compare up to three shortlisted properties.
-4. Estimate financing impact with EMI and affordability analysis.
-5. Book a site visit with a validated form and confirmation state.
+## 🎥 Demo
 
-The current build is frontend-first. Data is served from local mock sources by default, while the service layer already defines request/response contracts for future n8n or API integration.
+> Add your project demonstration video here.
 
-## Features
+<!-- Example:
+[![FindMyCrib Demo]\([https://img.youtube.com/vi/YOUR\_VIDEO\_ID/maxresdefault.jpg)\](https://www.youtube.com/watch?v=YOUR\_VIDEO\_ID](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg\)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID))
+-->
 
-- Hero landing screen with a high-contrast product introduction.
-- Property exploration with search, filters, and live suggestions.
-- Property detail modal with richer amenities and summary information.
-- Shortlist and compare workflow with a maximum of three properties.
-- Price intelligence screen with price status, estimated range, risk level, and AI-style insight copy.
-- Financial analysis screen with EMI calculation, affordability assessment, and investment rating.
-- Visit booking flow with form validation and confirmation feedback.
-- Session-backed state retention for search results and compare selections.
-- Animated backgrounds and three-dimensional presentation layers using `three`, `@react-three/fiber`, `@react-three/drei`, and `tsparticles`.
+---
 
-## Tech Stack
+# 📌 Overview
 
-| Area | Technology |
-| --- | --- |
-| Framework | React 19 |
-| Build Tool | Vite 8 |
-| Language | JavaScript (ES modules) |
-| Styling | Plain CSS, theme tokens, component-level styles |
-| 3D / Motion | `three`, `@react-three/fiber`, `@react-three/drei` |
-| Visual Effects | `@tsparticles/react`, `tsparticles` |
-| Charts | `recharts` |
-| State / Persistence | React state, `sessionStorage` |
-| Tooling | ESLint, Vite dev server, Vite preview server |
+Finding a suitable property often requires users to manually compare multiple listings, evaluate whether a property is fairly priced, estimate financial affordability, and coordinate property visits.
 
-## Architecture / Workflow
+**FindMyCrib brings these activities together into one guided workflow.**
 
-FindMyCrib is implemented as a section-driven single-page experience rather than a routed app. Navigation state lives in the main layout and controls which view is rendered.
+The platform allows users to:
 
-```mermaid
-flowchart LR
-  H[Hero] --> E[Explore]
-  E --> P[Price Check]
-  E --> C[Compare]
-  E --> F[Finance]
-  E --> B[Book Visit]
+1. 🔎 Discover residential properties
+2. 🏠 Explore detailed property information
+3. 📊 Analyze price competitiveness
+4. ⚖️ Compare shortlisted properties
+5. 💰 Estimate EMI and affordability
+6. 📅 Book a property site visit
 
-  E --> S[(sessionStorage)]
-  P --> M[Price Service]
-  C --> R[Compare Service]
-  F --> A[Finance Service]
-  B --> V[Booking Service]
+The application is designed around an **AI-driven multi-agent architecture**, where individual services can later be connected to AI agents, APIs, or automation workflows.
 
-  M --> N[Mock data / future API]
-  R --> N
-  A --> N
-  V --> N
+---
+
+# ✨ Key Features
+
+## 🔎 Property Discovery
+
+Explore residential properties using:
+
+* Location
+* Budget
+* Property type
+* Search suggestions
+* Property cards
+* Property details
+
+---
+
+## 📊 Price Intelligence
+
+Evaluate a property's pricing through:
+
+* Estimated price range
+* Price status
+* Risk indicators
+* Property-specific insights
+* AI-style analysis
+
+---
+
+## ⚖️ Property Comparison
+
+Shortlist and compare up to **three properties simultaneously**.
+
+Comparison can help users evaluate:
+
+* Price
+* Property characteristics
+* Amenities
+* Location-related information
+* Investment considerations
+
+---
+
+## 💰 Financial Analysis
+
+The finance module provides:
+
+* EMI calculation
+* Affordability analysis
+* Financial impact estimation
+* Investment-oriented insights
+
+---
+
+## 📅 Site Visit Booking
+
+Users can schedule a property visit through a validated booking workflow.
+
+The flow includes:
+
+* User information
+* Visit details
+* Form validation
+* Submission state
+* Booking confirmation
+
+---
+
+## 💾 Session Persistence
+
+The application uses browser `sessionStorage` to preserve relevant user selections during navigation.
+
+This currently includes:
+
+* Explore results
+* Selected properties
+* Comparison list
+
+---
+
+## 🌌 Interactive UI
+
+FindMyCrib uses modern visual effects to create an immersive real-estate experience.
+
+The interface includes:
+
+* Animated backgrounds
+* Interactive visual elements
+* 3D components
+* Particle effects
+* Responsive layouts
+* Dark-themed UI
+
+---
+
+# 🧠 AI / Multi-Agent Architecture
+
+The project is designed around an **agent-oriented service architecture**.
+
+The current implementation uses local mock data, while the service layer provides a foundation for connecting future AI agents or external APIs.
+
+```text
+                         ┌─────────────────┐
+                         │   FindMyCrib UI │
+                         └────────┬────────┘
+                                  │
+                    ┌─────────────┴─────────────┐
+                    │                           │
+              Property Data               User Actions
+                    │                           │
+                    ▼                           ▼
+             ┌─────────────┐             ┌─────────────┐
+             │   Explore   │             │   Booking   │
+             └──────┬──────┘             └──────┬──────┘
+                    │                           │
+          ┌─────────┼─────────┐                 │
+          ▼         ▼         ▼                 ▼
+      Price Agent Compare   Finance          Visit Agent
+          │         │         │                 │
+          └─────────┴─────────┴─────────────────┘
+                              │
+                              ▼
+                    ┌─────────────────┐
+                    │ Mock Data / API │
+                    └─────────────────┘
 ```
 
-Implementation notes:
+### Current architecture
 
-- `frontend/src/layouts/MainLayout.jsx` controls the active section and shared state.
-- `Explore` passes the selected property into the other feature screens.
-- `sessionStorage` is used to preserve the latest explore results and compare list across navigation.
-- The service layer is organized as agent-style adapters that can either read local mock data or call a webhook/API later.
-- The app currently runs in mock mode by default, so the UI is fully usable without a backend.
+The frontend currently operates in **mock mode**, allowing the complete user experience to run without a backend.
 
-<!-- Insert Architecture Diagram here -->
-<!-- Insert state flow diagram, system overview, or service contract diagram here -->
+The service layer is structured so that mock implementations can later be replaced or extended with:
 
-## Screenshots / Media Placeholders
+* REST APIs
+* AI agents
+* n8n workflows
+* Webhooks
+* External real-estate data sources
+* Persistent backend services
 
-Use the placeholders below if you want to add project images to the repository later. The README remains readable even if these assets are not present.
+---
 
-<h3 align="left">Hero</h3>
+# 🛠️ Tech Stack
 
-<p align="center">
-  <img src="Resources/01-hero-section.png" alt="Hero Section" width="900">
-</p>
+| Category       | Technology              |
+| -------------- | ----------------------- |
+| Frontend       | React 19                |
+| Build Tool     | Vite                    |
+| Language       | JavaScript / ES Modules |
+| Styling        | CSS                     |
+| 3D             | Three.js                |
+| React 3D       | React Three Fiber       |
+| 3D Helpers     | React Three Drei        |
+| Visual Effects | TSParticles             |
+| Charts         | Recharts                |
+| State          | React State             |
+| Persistence    | sessionStorage          |
+| Development    | ESLint                  |
+| Deployment     | Vercel                  |
 
+---
 
-<h3 align="left">Explore</h3>
+# 🏗️ Project Structure
 
-<p align="center">
-  <img src="Resources/08-explore-step-1.png" alt="Explore - Step 1" width="900">
-  <br><br>
-  <img src="Resources/09-explore-step-2.png" alt="Explore - Step 2" width="900">
-  <br><br>
-  <img src="Resources/10-explore-step-3.png" alt="Explore - Step 3" width="900">
-</p>
+```text
+FindMyCrib/
+│
+├── Resources/
+│   └── Project resources and supporting material
+│
+├── frontend/
+│   │
+│   ├── public/
+│   │   ├── assets/
+│   │   ├── favicon.svg
+│   │   └── icons.svg
+│   │
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── config/
+│   │   ├── data/
+│   │   ├── layouts/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   ├── package.json
+│   └── ...
+│
+├── DOCUMENTATION.md
+├── LICENSE
+├── README.md
+└── .gitignore
+```
 
-<h3 align="left">Price Check</h3>
+### Important directories
 
-<p align="center">
-  <img src="Resources/14-price-check.png" alt="Price Check" width="900">
-</p>
+| Directory         | Purpose                              |
+| ----------------- | ------------------------------------ |
+| `src/pages/`      | Main application screens             |
+| `src/components/` | Reusable UI components               |
+| `src/services/`   | Data/service adapters                |
+| `src/data/`       | Mock property and location data      |
+| `src/utils/`      | Utility and helper functions         |
+| `src/styles/`     | Global styling and theme definitions |
+| `public/assets/`  | Static application assets            |
 
-<h3 align="left">Compare</h3>
+---
 
-<p align="center">
-  <img src="Resources/05-compare-step-1.png" alt="Compare - Step 1" width="900">
-  <br><br>
-  <img src="Resources/06-compare-step-2.png" alt="Compare - Step 2" width="900">
-  <br><br>
-  <img src="Resources/07-compare-step-3.png" alt="Compare - Step 3" width="900">
-</p>
+# 🔄 Application Workflow
 
-<h3 align="left">Finance</h3>
+```text
+Landing
+   │
+   ▼
+Explore Properties
+   │
+   ├───────────────┐
+   │               │
+   ▼               ▼
+Property       Shortlist
+Details            │
+                   ▼
+              Compare
+                   │
+       ┌───────────┼───────────┐
+       ▼           ▼           ▼
+  Price Check   Finance   Book Visit
+       │           │           │
+       └───────────┴───────────┘
+                   │
+                   ▼
+             User Decision
+```
 
-<p align="center">
-  <img src="Resources/11-finance-step-1.png" alt="Finance - Step 1" width="900">
-  <br><br>
-  <img src="Resources/12-finance-step-2.png" alt="Finance - Step 2" width="900">
-  <br><br>
-  <img src="Resources/13-finance-step-3.png" alt="Finance - Step 3" width="900">
-</p>
+---
 
-<h3 align="left">Book Visit</h3>
+# 🚀 Getting Started
 
-<p align="center">
-  <img src="Resources/02-book-visit-step-1.png" alt="Book Visit - Step 1" width="900">
-  <br><br>
-  <img src="Resources/03-book-visit-step-2.png" alt="Book Visit - Step 2" width="900">
-  <br><br>
-  <img src="Resources/04-book-visit-step-3.png" alt="Book Visit - Step 3" width="900">
-</p>
+## Prerequisites
 
-### Video
+Make sure the following are installed:
 
+* **Node.js 20+**
+* **npm**
+* **Git**
 
-
-## Installation
-
-### Prerequisites
-
-- Node.js 20 or newer is recommended.
-- npm is included with Node.js.
-
-### Setup
+Check your versions:
 
 ```bash
-git clone <https://github.com/charanmahendaran/FindMyCrib.git>
-cd findmycrib-ui/frontend
+node --version
+npm --version
+git --version
+```
+
+---
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/charanmahendaran/FindMyCrib.git
+```
+
+Move into the project:
+
+```bash
+cd FindMyCrib
+```
+
+---
+
+## 2. Open the Frontend
+
+The Vite application is located inside the `frontend` directory.
+
+```bash
+cd frontend
+```
+
+---
+
+## 3. Install Dependencies
+
+```bash
 npm install
 ```
 
-### Run locally
+---
+
+## 4. Start the Development Server
 
 ```bash
 npm run dev
 ```
 
-### Build for production
+Vite will provide a local development URL, normally:
+
+```text
+http://localhost:5173
+```
+
+Open the URL in your browser.
+
+---
+
+# 📦 Production Build
+
+Create an optimized production build:
 
 ```bash
 npm run build
 ```
 
-### Preview the production build
+Preview the production build locally:
 
 ```bash
 npm run preview
 ```
 
-## Usage
-
-1. Open the app in your browser after starting the dev server.
-2. Begin on the Hero screen and move into Explore.
-3. Search by location, budget, and property type.
-4. Open a property card to review details or add it to the compare list.
-5. Switch to Price Check, Finance, or Book Visit after selecting a property.
-6. Submit the booking form to view the confirmation state.
-
-## Project Structure
+The generated production files are placed in:
 
 ```text
-findmycrib-ui/
-|-- README.md
-|-- LICENSE
-|-- DOCUMENTATION.md
-`-- frontend/
-    |-- package.json
-    |-- public/
-    |   |-- assets/
-    |   |-- favicon.svg
-    |   `-- icons.svg
-    `-- src/
-        |-- assets/
-        |-- components/
-        |-- config/
-        |-- data/
-        |-- layouts/
-        |-- pages/
-        |-- services/
-        |-- styles/
-        |-- utils/
-        |-- App.jsx
-        `-- main.jsx
+frontend/dist/
 ```
-
-Key folders:
-
-| Folder | Purpose |
-| --- | --- |
-| `src/pages/` | Top-level feature screens such as Hero, Explore, Price Check, Compare, Finance, and Book Visit |
-| `src/components/` | Reusable UI building blocks, cards, overlays, scenes, and navigation |
-| `src/services/` | Request adapters and mock/API contracts for property analysis and booking |
-| `src/data/` | Local property and location datasets used by the mock experience |
-| `src/utils/` | Formatting, debouncing, image mapping, caching, and normalization helpers |
-| `src/styles/` | Global theme and shared style tokens |
-
-## Results
-
-The current implementation delivers these working outcomes:
-
-| Screen | Result |
-| --- | --- |
-| Hero | Brand-forward landing view with a clear call to action |
-| Explore | Searchable property discovery with shortlist support |
-| Price Check | Price evaluation with risk and value summary |
-| Compare | Side-by-side ranking of up to three properties |
-| Finance | EMI and affordability analysis for decision support |
-| Book Visit | Form validation and booking confirmation flow |
-
-The interface is fully usable in mock mode and demonstrates the intended product experience without requiring a live backend.
-
-## Future Improvements
-
-- Replace mock data with live API or n8n webhook responses.
-- Move runtime configuration fully into environment variables.
-- Add URL routing so sections can be deep-linked.
-- Add automated tests for the compare, finance, and booking workflows.
-- Introduce accessibility pass improvements for keyboard navigation and screen readers.
-- Add deployment scripts and a documented production hosting target.
-- Add a persistent backend for booking storage and analytics.
-
-## Contributors
-
-- Charan M - frontend design, implementation, and product workflow integration
-
-## License
-
-This project is proprietary. See [LICENSE](./LICENSE) for the usage terms.
 
 ---
 
-For implementation-level documentation, see [DOCUMENTATION.md](./DOCUMENTATION.md).
+# ☁️ Deployment
+
+The application can be deployed using **Vercel**.
+
+Because the Vite application is located inside `frontend/`, configure the Vercel project with:
+
+```text
+Root Directory: frontend
+```
+
+Recommended configuration:
+
+```text
+Framework Preset: Vite
+Root Directory: frontend
+Build Command: npm run build
+Output Directory: dist
+Install Command: npm install
+```
+
+---
+
+# 📸 Screenshots
+
+Add screenshots of the major application sections here.
+
+### Landing / Hero
+
+<!-- Add screenshot -->
+
+### Property Explorer
+
+<!-- Add screenshot -->
+
+### Property Details
+
+<!-- Add screenshot -->
+
+### Price Intelligence
+
+<!-- Add screenshot -->
+
+### Property Comparison
+
+<!-- Add screenshot -->
+
+### Financial Analysis
+
+<!-- Add screenshot -->
+
+### Site Visit Booking
+
+<!-- Add screenshot -->
+
+---
+
+# 📚 Documentation
+
+Detailed implementation information is available in:
+
+**[`DOCUMENTATION.md`](./DOCUMENTATION.md)**
+
+This document contains deeper technical information about the project's implementation and architecture.
+
+---
+
+# 👨‍💻 Author
+
+### Charan Mahendaran
+
+Electronics & Communication Engineering graduate interested in:
+
+* Software Development
+* Full-Stack Development
+* Artificial Intelligence
+* Embedded Systems
+* VLSI & Digital Design
+
+### Links
+
+* **GitHub:** [github.com/charanmahendaran](https://github.com/charanmahendaran)
+* **LinkedIn:** [linkedin.com/in/charanmahendaran](https://www.linkedin.com/in/charanmahendaran)
+* **Portfolio:** [Portfolio](https://portfolio-d6803.web.app)
+
+---
+
+# 📄 License
+
+This project is proprietary.
+
+See [`LICENSE`](./LICENSE) for the applicable terms.
+
+---
+
+<p align="center">
+  Built with ❤️ by <strong>Charan Mahendaran</strong>
+</p>
